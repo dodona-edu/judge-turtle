@@ -1,0 +1,144 @@
+"""translate judge output towards Dodona."""
+
+from enum import Enum, auto
+from typing import Any
+
+from .dodona_command import ErrorType
+
+
+class Translator:
+    """a class for translating all user feedback.
+
+    The Translator class provides translations for a set of Text
+    messages and for the Dodona error types.
+    """
+
+    class Language(Enum):
+        """Language."""
+
+        EN = auto()
+        NL = auto()
+
+    class Text(Enum):
+        """Text message content enum."""
+
+        ADD_A_SEMICOLON = auto()
+        INVALID_SINGLE_QUOTE_TABLE_NAME = auto()
+        SUBMISSION_WRONG_QUERY_TYPE = auto()
+        SUBMISSION_FORBIDDEN_SYMBOLREGEX = auto()
+        SUBMISSION_MANDATORY_SYMBOLREGEX = auto()
+        SUBMISSION_FORBIDDEN_FULLREGEX = auto()
+        SUBMISSION_MANDATORY_FULLREGEX = auto()
+        SUBMISSION_CONTAINS_MORE_QUERIES = auto()
+        SUBMISSION_CONTAINS_LESS_QUERIES = auto()
+        DIFFERENT_ROW_COUNT = auto()
+        DIFFERENT_COLUMN_COUNT = auto()
+        COMPARING_QUERY_OUTPUT_CSV_CONTENT = auto()
+        COMPARING_QUERY_OUTPUT_TYPES = auto()
+        QUERY_SHOULD_ORDER_ROWS = auto()
+        QUERY_SHOULD_NOT_ORDER_ROWS = auto()
+        ROWS_ARE_BEING_ORDERED = auto()
+        ROWS_ARE_NOT_BEING_ORDERED = auto()
+        CORRECT_ROWS_WRONG_ORDER = auto()
+        COMPARING_TABLE_LAYOUT = auto()
+        COMPARING_TABLE_CONTENT = auto()
+
+    def __init__(self, language: Language) -> None:
+        """Create Translator.
+
+        Args:
+            language: language enum to use for translations
+        """
+        self.language = language
+
+    @classmethod
+    def from_str(cls: type["Translator"], language: str) -> "Translator":
+        """Create a Translator instance.
+
+        If the language is not detected correctly or not supported
+        the translator defaults to English (EN).
+
+        Args:
+            language: Dodona language string "nl" or "en"
+
+        Returns:
+            translator
+        """
+        if language == "nl":
+            return cls(cls.Language.NL)
+
+        # default value is EN
+        return cls(cls.Language.EN)
+
+    def human_error(self, error: ErrorType) -> str:
+        """Translate an ErrorType enum into a human-readable string.
+
+        Args:
+            error: ErrorType enum
+
+        Returns:
+            translated human-readable string
+        """
+        return self.error_translations[self.language][error]
+
+    def error_status(self, error: ErrorType) -> dict[str, str]:
+        """Translate an ErrorType enum into a status object.
+
+        Args:
+            error: ErrorType enum
+
+        Returns:
+            Dodona status object
+        """
+        return {
+            "enum": error,
+            "human": self.human_error(error),
+        }
+
+    def translate(self, message: Text, **kwargs: Any) -> str:
+        """Translate a Text enum into a string.
+
+        Args:
+            message: Text enum
+            kwargs: parameters for message
+
+        Returns:
+            translated text
+        """
+        return self.text_translations[self.language][message].format(**kwargs)
+
+    error_translations = {
+        Language.EN: {
+            ErrorType.INTERNAL_ERROR: "Internal error",
+            ErrorType.COMPILATION_ERROR: "The query is not valid",
+            ErrorType.MEMORY_LIMIT_EXCEEDED: "Memory limit exceeded",
+            ErrorType.TIME_LIMIT_EXCEEDED: "Time limit exceeded",
+            ErrorType.OUTPUT_LIMIT_EXCEEDED: "Output limit exceeded",
+            ErrorType.RUNTIME_ERROR: "Crashed while testing",
+            ErrorType.WRONG: "Test failed",
+            ErrorType.WRONG_ANSWER: "Test failed",
+            ErrorType.CORRECT: "All tests succeeded",
+            ErrorType.CORRECT_ANSWER: "All tests succeeded",
+        },
+        Language.NL: {
+            ErrorType.INTERNAL_ERROR: "Interne fout",
+            ErrorType.COMPILATION_ERROR: "Ongeldige query",
+            ErrorType.MEMORY_LIMIT_EXCEEDED: "Geheugenlimiet overschreden",
+            ErrorType.TIME_LIMIT_EXCEEDED: "Tijdslimiet overschreden",
+            ErrorType.OUTPUT_LIMIT_EXCEEDED: "Outputlimiet overschreden",
+            ErrorType.RUNTIME_ERROR: "Gecrasht bij testen",
+            ErrorType.WRONG: "Test gefaald",
+            ErrorType.WRONG_ANSWER: "Test gefaald",
+            ErrorType.CORRECT: "Alle testen geslaagd",
+            ErrorType.CORRECT_ANSWER: "Alle testen geslaagd",
+        },
+    }
+
+    text_translations = {
+        Language.EN: {
+            Text.ADD_A_SEMICOLON: "Add a semicolon ';' at the end of each SQL query.",
+        },
+        Language.NL: {
+            Text.ADD_A_SEMICOLON: "Voeg een puntkomma ';' toe aan het einde van elke SQL query.",
+        },
+    }
