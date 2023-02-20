@@ -1,4 +1,4 @@
 svg-turtle==0.4.1
 Pillow==9.4.0
-cairosvg==2.5.2
+cairosvg==2.6.0
 numpy==1.24.2
