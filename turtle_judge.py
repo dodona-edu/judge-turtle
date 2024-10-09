@@ -73,23 +73,20 @@ with Judgement():
 
             correct_pixels, total_pixels, expected_total = diff_images(png_submission, png_solution)
 
-            base64_submission = base64.b64encode(svg_submission).decode("utf-8")
-            base64_solution = base64.b64encode(svg_solution).decode("utf-8")
+            # base64_submission = base64.b64encode(svg_submission).decode("utf-8")
+            # base64_solution = base64.b64encode(svg_solution).decode("utf-8")
+
+            svg_submission_str = svg_submission.decode("utf-8")
+            svg_solution_str = svg_solution.decode("utf-8")
 
             html = f"""
             <div style="display:inline-block;width:50%;">
                 <p style="padding:10px">{config.translator.translate(Translator.Text.SUBMISSION_TITLE)}</p>
-                <img
-                    alt="submission result"
-                    style="width:98%;background-color:#fff"
-                    src="data:image/svg+xml;base64,{base64_submission}" />
+                <div style="width:98%;background-color:#fff">{svg_submission_str}</div>
             </div>
             <div style="display:inline-block;float:right;width:50%;">
                 <p style="padding:10px">{config.translator.translate(Translator.Text.SOLUTION_TITLE)}</p>
-                <img
-                    alt="solution result"
-                    style="width:98%;background-color:#fff"
-                    src="data:image/svg+xml;base64,{base64_solution}" />
+                <div style="width:98%;background-color:#fff">{svg_solution_str}</div>
             </div>
             """
 
