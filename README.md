@@ -18,6 +18,7 @@
 * Comparison based on solution Python file
 * Submission and solution image shown side-by-side
 * Absolute difference and percentage of mismatched visible (non-transparant) pixels
+* Support for evaluationless (creative) exercises — when no `solution.py` is provided, the student's drawing is rendered and marked correct, useful for open-ended exercises like "Draw a smiley"
 * Option to set custom canvas size in `config.json`
 * Feedback in language of user (Dutch or English)
 
@@ -42,8 +43,10 @@
 
 > [More info about repository directory structure](https://docs.dodona.be/en/references/repository-directory-structure/#example-of-a-valid-repository-structure)
 
-Add your solution file (`solution.py`) the **`evaluation`** folder. You can define a different name for the solution in the `config.json` file. Absolute
+Add your solution file (`solution.py`) to the **`evaluation`** folder. You can define a different name for the solution in the `config.json` file. Absolute
 necessary files are marked with `▶` in the tree structure below.
+
+> **Evaluationless exercises:** If no `solution.py` is present in the `evaluation` folder, the judge renders the student's submission as-is and marks it correct. This is useful for open-ended creative exercises where there is no single correct answer.
 
 ```text
 +-- README.md                            # Optional: Describes the repository
@@ -118,11 +121,11 @@ necessary files are marked with `▶` in the tree structure below.
 
 If these settings are not defined, the default value is chosen.
 
-| Evaluation setting | Description                    | Possible values | Default         |
-|--------------------|--------------------------------|-----------------|-----------------|
-| `solution_file`    | Relative path to solution file | path            | `./solution.py` |
-| `canvas_width`     | Width of canvas in pixels      | int             | `400`           |
-| `canvas_height`    | Height of canvas in pixels     | int             | `250`           |
+| Evaluation setting | Description                                                                                      | Possible values | Default         |
+|--------------------|--------------------------------------------------------------------------------------------------|-----------------|-----------------|
+| `solution_file`    | Relative path to solution file. If the file does not exist, the exercise runs in evaluationless mode. | path            | `./solution.py` |
+| `canvas_width`     | Width of canvas in pixels                                                                        | int             | `400`           |
+| `canvas_height`    | Height of canvas in pixels                                                                       | int             | `250`           |
 
 ## Generator script
 

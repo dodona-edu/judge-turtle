@@ -23,6 +23,7 @@ class Translator:
         """Text message content enum."""
 
         COMPARING_IMAGES = auto()
+        RENDERING = auto()
         SOLUTION_EXECUTION_ERROR = auto()
         SUBMISSION_EXECUTION_ERROR = auto()
         SOLUTION_TITLE = auto()
@@ -123,6 +124,7 @@ class Translator:
     text_translations = {
         Language.EN: {
             Text.COMPARING_IMAGES: "Comparing images",
+            Text.RENDERING: "Rendering",
             Text.SOLUTION_EXECUTION_ERROR: "Error executing solution script:\n    {error}",
             Text.SUBMISSION_EXECUTION_ERROR: "Error executing submission script:\n    {error}",
             Text.SOLUTION_TITLE: "Solution:",
@@ -132,6 +134,7 @@ class Translator:
         },
         Language.NL: {
             Text.COMPARING_IMAGES: "Afbeeldingen vergelijken",
+            Text.RENDERING: "Weergave",
             Text.SOLUTION_EXECUTION_ERROR: "Error bij het uitvoeren van het oplossingsscript:\n    {error}",
             Text.SUBMISSION_EXECUTION_ERROR: "Error bij het uitvoeren van het ingediende script:\n    {error}",
             Text.SOLUTION_TITLE: "Oplossing:",
