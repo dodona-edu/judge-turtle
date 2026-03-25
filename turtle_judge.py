@@ -1,6 +1,5 @@
 """turtle judge main script."""
 
-import base64
 import os
 import sys
 
@@ -59,12 +58,16 @@ with Judgement():
                     format=MessageFormat.CODE,
                 ) from error
             try:
-                svg_solution = generate_svg_byte_stream(config.solution_file, config.canvas_width, config.canvas_height)
+                svg_solution = generate_svg_byte_stream(
+                    config.solution_file, config.canvas_width, config.canvas_height
+                )
             except BaseException as error:
                 raise DodonaException(
                     config.translator.error_status(ErrorType.COMPILATION_ERROR),
                     permission=MessagePermission.STAFF,
-                    description=config.translator.translate(Translator.Text.SUBMISSION_EXECUTION_ERROR, error=error),
+                    description=config.translator.translate(
+                        Translator.Text.SUBMISSION_EXECUTION_ERROR, error=error
+                    ),
                     format=MessageFormat.CODE,
                 ) from error
 
@@ -73,12 +76,10 @@ with Judgement():
 
             correct_pixels, total_pixels, expected_total = diff_images(png_submission, png_solution)
 
-            # base64_submission = base64.b64encode(svg_submission).decode("utf-8")
-            # base64_solution = base64.b64encode(svg_solution).decode("utf-8")
-
             svg_submission_str = svg_submission.decode("utf-8")
             svg_solution_str = svg_solution.decode("utf-8")
 
+            # pylint: disable-next=C0103
             html = f"""
             <div style="display:inline-block;width:50%;">
                 <p style="padding:10px">{config.translator.translate(Translator.Text.SUBMISSION_TITLE)}</p>

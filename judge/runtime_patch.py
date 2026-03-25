@@ -95,7 +95,7 @@ class TimePatch(Patch):  # noqa: R0903
 
     def patch(self):
         """Patch generator."""
-        time_module: Any = sys.modules["time"]
+        time_module = sys.modules["time"]
         old_sleep = time_module.sleep
         try:
             time_module.sleep = lambda x: None
@@ -117,7 +117,7 @@ class InOutPatch(Patch):  # noqa: R0903
             yield sys.stdin, sys.stdout, sys.stderr
         finally:
             sys.stdin, sys.stdout, sys.stderr = old_in, old_out, old_err
-            sys.__stdin__, sys.__stdout__, sys.__stderr__ = __old_in__, __old_out__, __old_err__
+            sys.__stdin__, sys.__stdout__, sys.__stderr__ = __old_in__, __old_out__, __old_err__  # type: ignore[misc]
 
 
 class RuntimePatch(Patch):  # noqa: R0903
