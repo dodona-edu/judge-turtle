@@ -36,6 +36,14 @@ with Judgement():
     config.solution_file = str(getattr(config, "solution_file", "./solution.py"))
     config.solution_file = os.path.join(config.resources, config.solution_file)
 
+    # Read optional input file
+    config.input_file = str(getattr(config, "input_file", "./input.txt"))
+    config.input_file = os.path.join(config.resources, config.input_file)
+    stdin_data = ""
+    if os.path.exists(config.input_file):
+        with open(config.input_file, encoding="utf-8") as f:
+            stdin_data = f.read()
+
     if not os.path.exists(config.solution_file):
         with Tab(config.translator.translate(Translator.Text.RENDERING)):
             with Context(), TestCase(
@@ -43,7 +51,9 @@ with Judgement():
                 description="",
             ):
                 try:
-                    svg_submission = generate_svg_byte_stream(config.source, config.canvas_width, config.canvas_height)
+                    svg_submission = generate_svg_byte_stream(
+                        config.source, config.canvas_width, config.canvas_height, stdin_data
+                    )
                 except BaseException as error:
                     raise DodonaException(
                         config.translator.error_status(ErrorType.COMPILATION_ERROR),
@@ -74,7 +84,9 @@ with Judgement():
                 description="",
             ):
                 try:
-                    svg_submission = generate_svg_byte_stream(config.source, config.canvas_width, config.canvas_height)
+                    svg_submission = generate_svg_byte_stream(
+                        config.source, config.canvas_width, config.canvas_height, stdin_data
+                    )
                 except BaseException as error:
                     raise DodonaException(
                         config.translator.error_status(ErrorType.COMPILATION_ERROR),
@@ -83,7 +95,7 @@ with Judgement():
                     ) from error
                 try:
                     svg_solution = generate_svg_byte_stream(
-                        config.solution_file, config.canvas_width, config.canvas_height
+                        config.solution_file, config.canvas_width, config.canvas_height, stdin_data
                     )
                 except BaseException as error:
                     raise DodonaException(
