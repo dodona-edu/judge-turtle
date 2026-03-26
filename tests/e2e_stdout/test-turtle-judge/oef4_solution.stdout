@@ -2,18 +2,44 @@
  "command": "start-judgement"
 }
 {
- "command": "append-message",
- "message": {
-  "description": "Could not find solution file: '<exercise_path>/evaluation/./solution.py'.",
-  "format": "text",
-  "permission": "staff"
+ "command": "start-tab",
+ "title": "Weergave"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "",
+  "format": "python"
  }
 }
 {
- "accepted": false,
- "command": "close-judgement",
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"background-color:#fff\"><svg baseProfile=\"full\" height=\"250px\" version=\"1.1\" width=\"400px\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /></svg></div>",
+  "format": "html"
+ },
+ "expected": ""
+}
+{
+ "command": "close-test",
+ "generated": "",
  "status": {
-  "enum": "runtime error",
-  "human": "Gecrasht bij testen"
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
  }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "close-tab"
+}
+{
+ "command": "close-judgement"
 }

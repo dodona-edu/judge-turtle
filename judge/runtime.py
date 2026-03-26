@@ -28,15 +28,15 @@ def run_file(file_path: str, width: int, height: int):
         TimePatch(),
         RuntimePatch(script_name),
     ):
-        run_globals = dict(
-            __name__=script_name,
-            __file__=script_name,
-            __cached__=None,
-            __doc__=None,
-            __loader__=None,
-            __package__=script_name,
-            __spec__=None,
-        )
+        run_globals = {
+            "__name__": script_name,
+            "__file__": script_name,
+            "__cached__": None,
+            "__doc__": None,
+            "__loader__": None,
+            "__package__": script_name,
+            "__spec__": None,
+        }
 
         run_code(code, run_globals)
 
