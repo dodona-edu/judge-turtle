@@ -107,12 +107,17 @@ class TimePatch(Patch):  # noqa: R0903
 class InOutPatch(Patch):  # noqa: R0903
     """Patch stdin, stdout, stderr."""
 
+    def __init__(self, stdin_data: str = ""):
+        """Create InOut patch with optional stdin data."""
+        self.stdin_data = stdin_data
+        super().__init__()
+
     def patch(self):
         """Patch generator."""
         old_in, old_out, old_err = sys.stdin, sys.stdout, sys.stderr
         __old_in__, __old_out__, __old_err__ = sys.__stdin__, sys.__stdout__, sys.__stderr__
         try:
-            sys.stdin, sys.stdout, sys.stderr = StringIO(), StringIO(), StringIO()
+            sys.stdin, sys.stdout, sys.stderr = StringIO(self.stdin_data), StringIO(), StringIO()
             __old_in__, __old_out__, __old_err__ = sys.stdin, sys.stdout, sys.stderr
             yield sys.stdin, sys.stdout, sys.stderr
         finally:

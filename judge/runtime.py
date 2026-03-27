@@ -11,7 +11,7 @@ from PIL import Image, ImageChops  # noqa
 from .runtime_patch import InOutPatch, RuntimePatch, TimePatch, TurtlePatch
 
 
-def run_file(file_path: str, width: int, height: int):
+def run_file(file_path: str, width: int, height: int, stdin_data: str = ""):
     """Run the submission file."""
     script_name = "<solution>"
     code = None
@@ -24,7 +24,7 @@ def run_file(file_path: str, width: int, height: int):
 
     with (
         TurtlePatch(width, height) as turtle,
-        InOutPatch(),
+        InOutPatch(stdin_data),
         TimePatch(),
         RuntimePatch(script_name),
     ):
@@ -43,9 +43,9 @@ def run_file(file_path: str, width: int, height: int):
         return turtle
 
 
-def generate_svg_byte_stream(file_path: str, width: int, height: int) -> bytes:
+def generate_svg_byte_stream(file_path: str, width: int, height: int, stdin_data: str = "") -> bytes:
     """Generate SVG byte stream from file."""
-    turtle_instance = run_file(file_path, width, height)
+    turtle_instance = run_file(file_path, width, height, stdin_data)
     return turtle_instance.to_svg().encode()
 
 
