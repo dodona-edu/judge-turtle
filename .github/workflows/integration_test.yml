@@ -1,4 +1,4 @@
-name: Python
+name: Integration test
 
 on:
   push:
@@ -6,25 +6,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/dodona-edu/dodona-python:latest
+      options: --user root
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "pip"
-          cache-dependency-path: |
-            requirements.txt
-            requirements-dev.txt
-      - name: Install dependencies
-        run: ./devel/install_deps.sh
       - name: Install dev dependencies
         run: ./devel/install_dev_deps.sh
-      - name: Running pylama
-        run: ./devel/check.sh
       - name: Run tests
         run: ./devel/run-tests.sh
       - name: Code Coverage
