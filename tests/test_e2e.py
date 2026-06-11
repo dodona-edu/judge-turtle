@@ -104,3 +104,6 @@ class TestEndToEnd(unittest.TestCase):
 
     def test_e2e(self):
         self.run_all_repo_tests(os.path.join("test-turtle-judge"))
+
+    def test_example_exercises(self):
+        self.run_all_repo_tests(os.path.join("example-exercises"))

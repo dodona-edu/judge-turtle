@@ -1,0 +1,16 @@
+{
+  "description": {
+    "names": {
+      "en": "House",
+      "nl": "Huis"
+    }
+  },
+  "evaluation": {
+    "handler": "turtle"
+  },
+  "programming_language": "python",
+  "labels": [
+    "turtle",
+    "house"
+  ]
+}
