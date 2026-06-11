@@ -1,14 +1,14 @@
-name: Python
+name: Lint
 
 on:
   push:
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
       - name: Setup Python
@@ -19,15 +19,10 @@ jobs:
           cache-dependency-path: |
             requirements.txt
             requirements-dev.txt
+            requirements-test.txt
       - name: Install dependencies
         run: ./devel/install_deps.sh
       - name: Install dev dependencies
         run: ./devel/install_dev_deps.sh
       - name: Running pylama
         run: ./devel/check.sh
-      - name: Run tests
-        run: ./devel/run-tests.sh
-      - name: Code Coverage
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
