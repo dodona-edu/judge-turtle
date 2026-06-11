@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: true
-      - name: Install dev dependencies
-        run: ./devel/install_dev_deps.sh
+      - name: Install test dependencies
+        run: ./devel/install_test_deps.sh
       - name: Run tests
         run: ./devel/run-tests.sh
       - name: Code Coverage

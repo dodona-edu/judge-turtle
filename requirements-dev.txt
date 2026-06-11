@@ -1,9 +1,6 @@
-setuptools==68.2.2
+-r requirements-test.txt
 
-pytest==7.2.0
-pytest-cov==4.0.0
-pytest-xdist==3.2.0
-pytest-subtests==0.10.0
+setuptools==68.2.2
 
 black==24.3.0
 isort==5.12.0

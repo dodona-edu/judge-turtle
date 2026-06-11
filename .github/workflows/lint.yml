@@ -19,6 +19,7 @@ jobs:
           cache-dependency-path: |
             requirements.txt
             requirements-dev.txt
+            requirements-test.txt
       - name: Install dependencies
         run: ./devel/install_deps.sh
       - name: Install dev dependencies
