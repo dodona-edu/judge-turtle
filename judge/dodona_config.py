@@ -6,7 +6,9 @@ from types import SimpleNamespace
 from typing import Any, Union
 
 
-class DodonaConfig(SimpleNamespace):  # noqa: R0902
+# PLW1641: __eq__ without __hash__. SimpleNamespace already defines __eq__ and is already
+# unhashable, so adding __hash__ here would make DodonaConfig hashable where its base is not.
+class DodonaConfig(SimpleNamespace):  # noqa: PLW1641
     """a class for containing all Dodona Judge configuration.
 
     Attributes:

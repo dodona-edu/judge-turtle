@@ -6,8 +6,8 @@ from io import StringIO
 from types import TracebackType
 from typing import Any, Literal
 
-from svg_turtle import SvgTurtle  # noqa
-from svg_turtle.canvas import Canvas  # noqa
+from svg_turtle import SvgTurtle
+from svg_turtle.canvas import Canvas
 
 
 class Patch(ABC):

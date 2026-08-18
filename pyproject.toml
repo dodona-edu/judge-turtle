@@ -1,5 +1,36 @@
-[tool.isort]
-profile = "black"
+[tool.coverage.run]
+omit = [
+    ".github/*",
+    "htmlcov/*",
+    "*/site-packages/*",
+    "tests/*",
+    "venv/*",
+]
+source = ["."]
 
-[tool.black]
+[tool.ruff]
 line-length = 120
+extend-exclude = ["tests/e2e_repos"]
+# Keep in step with .tool-versions; ruff defaults to py310 and can't infer it without a [project] table.
+target-version = "py312"
+
+[tool.ruff.lint]
+# The pylama.ini line-up this replaces: pycodestyle (E, W), pyflakes (F), pydocstyle (D),
+# mccabe (C90), isort (I), eradicate (ERA), pylint (PL). RUF100 keeps the noqa comments honest.
+select = ["E", "W", "F", "D", "C90", "I", "ERA", "PL", "RUF100"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+# Ignores rather than an exclude, so `ruff format` still applies to the tests.
+# pylama skipped them outright, so this is no less coverage than before.
+"tests/*" = ["ALL"]
+
+[tool.mypy]
+# pylama ran mypy with --ignore-missing-imports folded in, which is why the blanket `# noqa`
+# comments on these imports used to be enough. Standalone mypy needs it said out loud, and
+# naming the modules beats a global switch: a new untyped dependency should be a decision.
+[[tool.mypy.overrides]]
+module = ["svg_turtle.*", "cairosvg"]
+ignore_missing_imports = true

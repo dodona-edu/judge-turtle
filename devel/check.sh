@@ -5,7 +5,6 @@ ROOT="$(dirname "$(dirname "$0")")"
 
 cd "$ROOT"
 
-pytest \
-    --pylama \
-    --ignore="tests" \
-    "$@"
+ruff check .
+ruff format --check .
+mypy turtle_judge.py judge/
