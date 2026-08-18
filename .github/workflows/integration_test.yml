@@ -12,8 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-        with:
-          submodules: true
       - name: Install test dependencies
         run: ./devel/install_test_deps.sh
       - name: Run tests
