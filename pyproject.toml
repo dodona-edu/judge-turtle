@@ -31,9 +31,20 @@ ignore = [
 convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-# Ignores rather than an exclude, so `ruff format` still applies to the tests.
-# pylama skipped them outright, so this is no less coverage than before.
-"tests/*" = ["ALL"]
+# Test-suite idioms rather than things worth changing. Everything else applies to tests too,
+# so the docstring formatting rules, the naming rules and pathlib still hold in here.
+"tests/*" = [
+    "PT009",   # the suite is unittest style, converting every assertion is a separate decision
+    "D102",    # docstrings aren't expected on test methods,
+    "D103",    # on test helpers,
+    "D107",    # or on a TestCase __init__
+    "ANN201",  # nor are return types
+    "T201",    # print is the LEARN_OUTPUT banner in test_e2e.py
+    "FBT001",  # learning_mode reads fine as a positional flag on a test helper
+    "FBT002",  # idem, for its default
+    "TRY003",  # the FileNotFoundError names which golden file is missing, which is the useful part
+    "EM102",   # idem, and it reads better as an f-string than as a temporary
+]
 
 [[tool.ty.overrides]]
 include = ["judge/runtime_patch.py"]
