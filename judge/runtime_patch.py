@@ -37,11 +37,15 @@ class Patch(ABC):
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> Literal[False]:
-        """Drop generator when leaving the 'with' block. This invokes the finally block in the generator.
+        """Close the generator when leaving the 'with' block. This invokes its finally block.
 
         Returns:
             False: the patch 'with' block should not do any error handling.
         """
+        # close() rather than letting the reference drop do it. CPython finalises the generator
+        # immediately either way, but that finally block is what puts time.sleep, sys.stdin and
+        # the nulled-out builtins back, and the suite runs the judge several times per process.
+        self.generator.close()
         self.generator = None
 
         return False  # don't handle any errors
