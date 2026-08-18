@@ -1,5 +1,6 @@
 """Turtle runtime."""
 
+import builtins
 import io
 from io import BytesIO
 from pathlib import Path
@@ -20,9 +21,8 @@ def run_file(file_path: str | Path, width: int, height: int, stdin_data: str = "
     with io.open_code(str(Path(file_path).resolve())) as code_file:
         code = compile(code_file.read(), script_name, "exec")
 
-    # In an imported module __builtins__ is the builtins dict, not the module, so this is fine
-    # at runtime. mypy only knows the __main__ case, where it is the module.
-    run_code = __builtins__["exec"]  # type: ignore[index]
+    # Grabbed before the patches below null out builtins.exec for the submission.
+    run_code = builtins.exec
 
     with (
         TurtlePatch(width, height) as turtle,
