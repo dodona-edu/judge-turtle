@@ -32,6 +32,7 @@ class TestEndToEnd(unittest.TestCase):
         config_path = exercise_path / "config.json"
 
         config = {}
+        original_cwd = Path.cwd()
 
         with config_path.open(encoding="utf-8") as config_file:
             config.update(json.load(config_file).get("evaluation", {}))
@@ -52,8 +53,14 @@ class TestEndToEnd(unittest.TestCase):
             )
 
             os.chdir(cwd_path)
-            with fake_in_out(StringIO(json.dumps(config))) as (out, err):
-                runpy.run_path(str(self.root_path / "turtle_judge.py"))
+            try:
+                with fake_in_out(StringIO(json.dumps(config))) as (out, err):
+                    runpy.run_path(str(self.root_path / "turtle_judge.py"))
+            finally:
+                # Back out before TemporaryDirectory deletes it. Without this the process is left
+                # sitting in a directory that no longer exists, so os.getcwd() raises for whatever
+                # runs next, and the judge's own sanity check calls Path.cwd().
+                os.chdir(original_cwd)
 
         self.assertMultiLineEqual(err.getvalue().strip(), "")
 
