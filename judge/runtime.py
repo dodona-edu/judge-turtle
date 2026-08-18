@@ -58,9 +58,14 @@ def generate_png_image(svg_bytes: bytes, width: int, height: int) -> Image.Image
 
 def diff_images(submission: Image.Image, solution: Image.Image) -> tuple[int, int, int]:
     """Generate difference between two images, and return the number differing pixels."""
-    wrong_pixels = np.count_nonzero(np.array(ImageChops.difference(submission, solution)).any(axis=-1))
-    total_non_transparent_pixels = np.count_nonzero(np.array(submission).any(axis=-1) | np.array(solution).any(axis=-1))
+    # int(): np.count_nonzero returns an np.int64, which json.dumps refuses. These values only
+    # ever reach the feedback as interpolated text today, so nothing breaks, but the signature
+    # above promises int and a caller that puts one straight into a command would fail at runtime.
+    wrong_pixels = int(np.count_nonzero(np.array(ImageChops.difference(submission, solution)).any(axis=-1)))
+    total_non_transparent_pixels = int(
+        np.count_nonzero(np.array(submission).any(axis=-1) | np.array(solution).any(axis=-1))
+    )
     correct_non_transparent_pixels = total_non_transparent_pixels - wrong_pixels
-    expected_non_transparent_pixels = np.count_nonzero(np.array(solution).any(axis=-1))
+    expected_non_transparent_pixels = int(np.count_nonzero(np.array(solution).any(axis=-1)))
 
     return correct_non_transparent_pixels, total_non_transparent_pixels, expected_non_transparent_pixels
