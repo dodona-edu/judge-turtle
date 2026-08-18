@@ -1,6 +1,32 @@
 version: 2
 updates:
+  # requirements.txt mirrors dodona-edu/docker-images/dodona-python.dockerfile on purpose, so a
+  # bump to svg-turtle, Pillow, cairosvg or numpy that the image hasn't taken yet gets closed
+  # rather than merged. Those four move when the image moves.
   - package-ecosystem: pip
     directory: "/"
     schedule:
+      interval: monthly
+      time: "04:00"
+      timezone: Europe/Brussels
+    open-pull-requests-limit: 99
+    labels:
+      - dependencies
+    groups:
+      pytest:
+        patterns:
+          - "pytest*"
+      linters:
+        patterns:
+          - "ruff"
+          - "ty"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
       interval: weekly
+      day: monday
+      time: "04:00"
+      timezone: Europe/Brussels
+    open-pull-requests-limit: 99
+    labels:
+      - dependencies
