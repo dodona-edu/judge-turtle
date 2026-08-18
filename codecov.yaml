@@ -1,0 +1,3 @@
+# No comment on the pull request: the numbers still show up as checks, and a bot
+# comment on every PR is just noise.
+comment: false
