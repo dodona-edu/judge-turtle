@@ -17,7 +17,9 @@ target-version = "py312"
 [tool.ruff.lint]
 # The pylama.ini line-up this replaces: pycodestyle (E, W), pyflakes (F), pydocstyle (D),
 # mccabe (C90), isort (I), eradicate (ERA), pylint (PL). RUF100 keeps the noqa comments honest.
-select = ["E", "W", "F", "D", "C90", "I", "ERA", "PL", "RUF100"]
+# PYI036 guards the __exit__ signatures: it catches the missing `| None` that makes every
+# Dodona 'with' block fail a type checker's context manager check.
+select = ["E", "W", "F", "D", "C90", "I", "ERA", "PL", "RUF100", "PYI036"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
