@@ -1,5 +1,6 @@
 """Turtle runtime patches."""
 
+import builtins
 import sys
 from abc import ABC, abstractmethod
 from collections.abc import Generator
@@ -143,22 +144,22 @@ class RuntimePatch(Patch):
         """Patch generator."""
         old_os = sys.modules["os"]
         old_io = sys.modules["io"]
-        old_open = __builtins__["open"]
-        old_eval = __builtins__["eval"]
-        old_exec = __builtins__["exec"]
+        old_open = builtins.open
+        old_eval = builtins.eval
+        old_exec = builtins.exec
         old_argv = sys.argv
         try:
             sys.modules["os"] = None
             sys.modules["io"] = None
-            __builtins__["open"] = None
-            __builtins__["eval"] = None
-            __builtins__["exec"] = None
+            builtins.open = None
+            builtins.eval = None
+            builtins.exec = None
             sys.argv = [self.name]
             yield
         finally:
             sys.modules["os"] = old_os
             sys.modules["io"] = old_io
-            __builtins__["open"] = old_open
-            __builtins__["eval"] = old_eval
-            __builtins__["exec"] = old_exec
+            builtins.open = old_open
+            builtins.eval = old_eval
+            builtins.exec = old_exec
             sys.argv = old_argv
