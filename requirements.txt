@@ -1,4 +1,6 @@
-svg-turtle==0.4.2
-Pillow==10.0.1
-cairosvg==2.7.1
-numpy==1.26.0
+# These mirror dodona-edu/docker-images/dodona-python.dockerfile: the judge runs with
+# whatever that image ships, so a pin that differs from it is a lie about production.
+svg-turtle==1.1.0
+Pillow==12.2.0
+cairosvg==2.9.0
+numpy==2.4.6
