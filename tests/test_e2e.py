@@ -7,6 +7,7 @@ import shutil
 import tempfile
 import unittest
 from io import StringIO
+from pathlib import Path
 
 from .fake_in_out import fake_in_out
 
@@ -14,56 +15,68 @@ from .fake_in_out import fake_in_out
 class TestEndToEnd(unittest.TestCase):
     """E2E TestCase."""
 
-    def __init__(self, methodName: str) -> None:
+    def __init__(self, methodName: str) -> None:  # noqa: N803
+        # methodName is unittest.TestCase's own parameter name, so it can't be renamed here.
         super().__init__(methodName=methodName)
-        self.maxDiff = None  # noqa: C0103
-        self.root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        self.maxDiff = None
+        self.root_path = Path(__file__).resolve().parent.parent
 
-    def run_turtle_judge(self, exercise_path: str, submission_path: str, stdout_path: str, learning_mode: bool = False):
-        evaluation_path = os.path.join(exercise_path, "evaluation")
-        config_path = os.path.join(exercise_path, "config.json")
+    def run_turtle_judge(
+        self,
+        exercise_path: Path,
+        submission_path: Path,
+        stdout_path: Path,
+        learning_mode: bool = False,
+    ):
+        evaluation_path = exercise_path / "evaluation"
+        config_path = exercise_path / "config.json"
 
         config = {}
+        original_cwd = Path.cwd()
 
-        with open(config_path, "r", encoding="utf-8") as config_file:
+        with config_path.open(encoding="utf-8") as config_file:
             config.update(json.load(config_file).get("evaluation", {}))
 
         with tempfile.TemporaryDirectory() as cwd_path:
+            # str(): these go through json.dumps, which has no idea what a Path is.
             config.update(
                 {
                     "memory_limit": "99999999",
                     "time_limit": "99999999",
                     "programming_language": "python",
                     "natural_language": "nl",
-                    "resources": evaluation_path,
-                    "source": submission_path,
-                    "judge": self.root_path,
+                    "resources": str(evaluation_path),
+                    "source": str(submission_path),
+                    "judge": str(self.root_path),
                     "workdir": cwd_path,
                 }
             )
 
             os.chdir(cwd_path)
-            with fake_in_out(StringIO(json.dumps(config))) as (out, err):
-                runpy.run_path(os.path.join(self.root_path, "turtle_judge.py"))
+            try:
+                with fake_in_out(StringIO(json.dumps(config))) as (out, err):
+                    runpy.run_path(str(self.root_path / "turtle_judge.py"))
+            finally:
+                # Back out before TemporaryDirectory deletes it. Without this the process is left
+                # sitting in a directory that no longer exists, so os.getcwd() raises for whatever
+                # runs next, and the judge's own sanity check calls Path.cwd().
+                os.chdir(original_cwd)
 
         self.assertMultiLineEqual(err.getvalue().strip(), "")
 
+        actual = out.getvalue().strip().replace(str(exercise_path), "<exercise_path>")
+
         if learning_mode:
-            with open(stdout_path, "w", encoding="utf-8") as stdout:
-                stdout.write(out.getvalue().strip().replace(exercise_path, "<exercise_path>"))
+            stdout_path.write_text(actual, encoding="utf-8")
         else:
-            if not os.path.exists(stdout_path):
+            if not stdout_path.exists():
                 raise FileNotFoundError(f"Missing stdout file: {stdout_path}")
 
-            with open(stdout_path, "r", encoding="utf-8") as stdout:
-                self.assertMultiLineEqual(
-                    out.getvalue().strip().replace(exercise_path, "<exercise_path>"),
-                    stdout.read(),
-                )
+            self.assertMultiLineEqual(actual, stdout_path.read_text(encoding="utf-8"))
 
     def run_all_repo_tests(self, repo_path: str):
-        test_exercises_path = os.path.join(self.root_path, "tests", "e2e_repos", repo_path)
-        test_stdout_path = os.path.join(self.root_path, "tests", "e2e_stdout", repo_path)
+        test_exercises_path = self.root_path / "tests" / "e2e_repos" / repo_path
+        test_stdout_path = self.root_path / "tests" / "e2e_stdout" / repo_path
 
         learning_mode = os.environ.get("LEARN_OUTPUT", "NO") == "YES"
         if learning_mode:
@@ -74,27 +87,23 @@ class TestEndToEnd(unittest.TestCase):
 
             shutil.rmtree(test_stdout_path)
 
-        os.makedirs(test_stdout_path, exist_ok=True)
+        test_stdout_path.mkdir(parents=True, exist_ok=True)
 
-        for folder in os.listdir(test_exercises_path):
-            if folder[0] == "_":
+        # sorted(): iterdir yields in directory order, so without it the subtests run in whatever
+        # order the filesystem hands back, which differs between machines.
+        for exercise_path in sorted(test_exercises_path.iterdir()):
+            if exercise_path.name.startswith("_") or not exercise_path.is_dir():
                 continue
 
-            exercise_path = os.path.join(test_exercises_path, folder)
+            solution_path = exercise_path / "solution"
 
-            if not os.path.isdir(exercise_path):
-                continue
-
-            solution_path = os.path.join(exercise_path, "solution")
-
-            for submission in os.listdir(solution_path):
-                if not submission.endswith(".py"):
+            for submission_path in sorted(solution_path.iterdir()):
+                if submission_path.suffix != ".py":
                     continue
 
-                submission_path = os.path.join(solution_path, submission)
-                stdout_path = os.path.join(test_stdout_path, f"{folder}_{submission.removesuffix('.py')}.stdout")
+                stdout_path = test_stdout_path / f"{exercise_path.name}_{submission_path.stem}.stdout"
 
-                with self.subTest(exercise=folder, submission=submission):
+                with self.subTest(exercise=exercise_path.name, submission=submission_path.name):
                     self.run_turtle_judge(
                         exercise_path,
                         submission_path,
@@ -103,4 +112,4 @@ class TestEndToEnd(unittest.TestCase):
                     )
 
     def test_e2e(self):
-        self.run_all_repo_tests(os.path.join("test-turtle-judge"))
+        self.run_all_repo_tests("test-turtle-judge")
