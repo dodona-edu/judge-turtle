@@ -35,19 +35,14 @@ convention = "google"
 # pylama skipped them outright, so this is no less coverage than before.
 "tests/*" = ["ALL"]
 
-[tool.mypy]
-# pylama ran mypy with --ignore-missing-imports folded in, which is why the blanket `# noqa`
-# comments on these imports used to be enough. Standalone mypy needs it said out loud, and
-# naming the modules beats a global switch: a new untyped dependency should be a decision.
-[[tool.mypy.overrides]]
-module = ["svg_turtle.*", "cairosvg"]
-ignore_missing_imports = true
+[[tool.ty.overrides]]
+include = ["judge/runtime_patch.py"]
+# This module swaps attributes on live stdlib modules (turtle, time, io, sys.stdin) and hands the
+# submission a fake. A type checker models a module as a static namespace, so every patch line
+# reads as an error. All 17 of ty's diagnostics on this tree are in here, and they are the point
+# of the file rather than bugs in it. Everything else is checked normally.
 
-[[tool.mypy.overrides]]
-module = "judge.runtime_patch"
-# This module's whole job is to swap attributes on live stdlib modules (turtle, time, io, sys.stdin)
-# and hand the submission a fake. mypy models a module as a static namespace, so every patch line
-# reads as an error. Adding return annotations made mypy start checking these bodies, which it
-# skipped while they were unannotated, so the findings are pre-existing rather than new.
-# Narrowed to the three codes dynamic patching produces instead of switching the file off.
-disable_error_code = ["assignment", "attr-defined", "index"]
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+invalid-assignment = "ignore"
+invalid-argument-type = "ignore"
