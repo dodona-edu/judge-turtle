@@ -18,7 +18,7 @@
 {
  "command": "start-test",
  "description": {
-  "description": "<div style=\"background-color:#fff\"><svg baseProfile=\"full\" height=\"250px\" version=\"1.1\" width=\"400px\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /></svg></div>",
+  "description": "<div style=\"background-color:#fff\"><svg baseProfile=\"full\" height=\"250\" version=\"1.1\" width=\"400\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /></svg></div>",
   "format": "html"
  },
  "expected": ""
