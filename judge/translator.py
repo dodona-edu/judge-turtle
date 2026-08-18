@@ -129,8 +129,7 @@ class Translator:
             Text.SUBMISSION_EXECUTION_ERROR: "Error executing submission script:\n    {error}",
             Text.SOLUTION_TITLE: "Solution:",
             Text.SUBMISSION_TITLE: "Submission:",
-            Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} "
-            "({fraction:.1%}) visible pixels correct",
+            Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) visible pixels correct",
         },
         Language.NL: {
             Text.COMPARING_IMAGES: "Afbeeldingen vergelijken",
@@ -139,7 +138,6 @@ class Translator:
             Text.SUBMISSION_EXECUTION_ERROR: "Error bij het uitvoeren van het ingediende script:\n    {error}",
             Text.SOLUTION_TITLE: "Oplossing:",
             Text.SUBMISSION_TITLE: "Indiening:",
-            Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} "
-            "({fraction:.1%}) zichtbare pixels correct",
+            Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) zichtbare pixels correct",
         },
     }

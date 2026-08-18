@@ -46,9 +46,12 @@ with Judgement():
 
     if not os.path.exists(config.solution_file):
         with Tab(config.translator.translate(Translator.Text.RENDERING)):
-            with Context(), TestCase(
-                format=MessageFormat.PYTHON,
-                description="",
+            with (
+                Context(),
+                TestCase(
+                    format=MessageFormat.PYTHON,
+                    description="",
+                ),
             ):
                 try:
                     svg_submission = generate_svg_byte_stream(
@@ -79,9 +82,12 @@ with Judgement():
                     test.status = config.translator.error_status(ErrorType.CORRECT)
     else:
         with Tab(config.translator.translate(Translator.Text.COMPARING_IMAGES)):
-            with Context(), TestCase(
-                format=MessageFormat.PYTHON,
-                description="",
+            with (
+                Context(),
+                TestCase(
+                    format=MessageFormat.PYTHON,
+                    description="",
+                ),
             ):
                 try:
                     svg_submission = generate_svg_byte_stream(

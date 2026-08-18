@@ -5,8 +5,8 @@ import os
 from io import BytesIO
 
 import numpy as np
-from cairosvg import svg2png  # noqa
-from PIL import Image, ImageChops  # noqa
+from cairosvg import svg2png
+from PIL import Image, ImageChops
 
 from .runtime_patch import InOutPatch, RuntimePatch, TimePatch, TurtlePatch
 
@@ -20,7 +20,9 @@ def run_file(file_path: str, width: int, height: int, stdin_data: str = ""):
     with io.open_code(decoded_path) as code_file:
         code = compile(code_file.read(), script_name, "exec")
 
-    run_code = __builtins__["exec"]  # noqa
+    # In an imported module __builtins__ is the builtins dict, not the module, so this is fine
+    # at runtime. mypy only knows the __main__ case, where it is the module.
+    run_code = __builtins__["exec"]  # type: ignore[index]
 
     with (
         TurtlePatch(width, height) as turtle,
