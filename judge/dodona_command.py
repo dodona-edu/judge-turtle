@@ -3,12 +3,12 @@
 import json
 import sys
 from abc import ABC
-from enum import Enum
+from enum import StrEnum
 from types import SimpleNamespace, TracebackType
-from typing import Any, Optional, Union
+from typing import Any
 
 
-class ErrorType(str, Enum):
+class ErrorType(StrEnum):
     """Dodona error type."""
 
     INTERNAL_ERROR = "internal error"
@@ -22,32 +22,16 @@ class ErrorType(str, Enum):
     CORRECT = "correct"
     CORRECT_ANSWER = "correct answer"
 
-    def __str__(self) -> str:  # noqa: E0307
-        """Convert enum to string.
 
-        Returns:
-            string representation of enum
-        """
-        return self
-
-
-class MessagePermission(str, Enum):
+class MessagePermission(StrEnum):
     """Dodona permission for a message."""
 
     STUDENT = "student"
     STAFF = "staff"
     ZEUS = "zeus"
 
-    def __str__(self) -> str:  # noqa: E0307
-        """Convert enum to string.
 
-        Returns:
-            string representation of enum
-        """
-        return self
-
-
-class MessageFormat(str, Enum):
+class MessageFormat(StrEnum):
     """Dodona format for a message."""
 
     PLAIN = "plain"
@@ -61,29 +45,13 @@ class MessageFormat(str, Enum):
     CODE = "code"
     PYTHON = "python"
 
-    def __str__(self) -> str:  # noqa: E0307
-        """Convert enum to string.
 
-        Returns:
-            string representation of enum
-        """
-        return self
-
-
-class AnnotationSeverity(str, Enum):
+class AnnotationSeverity(StrEnum):
     """Dodona severity of an annotation."""
 
     ERROR = "error"
     WARNING = "warning"
     INFO = "info"
-
-    def __str__(self) -> str:  # noqa: E0307
-        """Convert enum to string.
-
-        Returns:
-            string representation of enum
-        """
-        return self
 
 
 class DodonaException(Exception):
@@ -100,7 +68,7 @@ class DodonaException(Exception):
     def __init__(
         self,
         status: dict[str, str],
-        recover_at: Optional[type] = None,
+        recover_at: type | None = None,
         **kwargs: Any,
     ) -> None:
         """Create DodonaException.
@@ -122,7 +90,9 @@ class DodonaException(Exception):
         self.message = Message(**kwargs) if len(kwargs) > 0 else None
 
 
-class DodonaCommand(ABC):
+# B024: no abstract members. Every method here has a usable default, so there is nothing to
+# declare abstract. ABC stays to say it is only ever subclassed, never instantiated directly.
+class DodonaCommand(ABC):  # noqa: B024
     """Abstract class, parent of all Dodona commands.
 
     This class provides all shared functionality for the Dodona commands. These commands
@@ -182,7 +152,7 @@ class DodonaCommand(ABC):
         """
         return {"command": f"start-{self.name()}", **self.start_args.__dict__}
 
-    def close_msg(self) -> Optional[dict]:
+    def close_msg(self) -> dict | None:
         """Create close message that is printed as JSON to stdout when exiting the 'with' block.
 
         Returns:
@@ -191,7 +161,7 @@ class DodonaCommand(ABC):
         return {"command": f"close-{self.name()}", **self.close_args.__dict__}
 
     @staticmethod
-    def __print_command(result: Optional[dict]) -> None:
+    def __print_command(result: dict | None) -> None:
         """Print the provided to stdout as JSON.
 
         Args:
@@ -274,10 +244,7 @@ class DodonaCommand(ABC):
         Returns:
             if True, the exception is not propagated
         """
-        if isinstance(exc_val, DodonaException):
-            handled = self.handle_dodona_exception(exc_val)
-        else:
-            handled = False
+        handled = self.handle_dodona_exception(exc_val) if isinstance(exc_val, DodonaException) else False
 
         self.__print_command(self.close_msg())
         return handled
@@ -378,7 +345,7 @@ class TestCase(DodonaCommandWithAccepted):
 class Test(DodonaCommandWithStatus):
     """Dodona Test."""
 
-    def __init__(self, description: Union[str, dict], expected: str, **kwargs: Any) -> None:
+    def __init__(self, description: str | dict, expected: str, **kwargs: Any) -> None:
         """Create Test.
 
         Args:

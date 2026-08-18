@@ -1,8 +1,9 @@
 """Turtle runtime."""
 
 import io
-import os
 from io import BytesIO
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 from cairosvg import svg2png
@@ -11,13 +12,12 @@ from PIL import Image, ImageChops
 from .runtime_patch import InOutPatch, RuntimePatch, TimePatch, TurtlePatch
 
 
-def run_file(file_path: str, width: int, height: int, stdin_data: str = ""):
+def run_file(file_path: str | Path, width: int, height: int, stdin_data: str = "") -> Any:
     """Run the submission file."""
     script_name = "<solution>"
     code = None
 
-    decoded_path = os.path.abspath(os.fsdecode(file_path))
-    with io.open_code(decoded_path) as code_file:
+    with io.open_code(str(Path(file_path).resolve())) as code_file:
         code = compile(code_file.read(), script_name, "exec")
 
     # In an imported module __builtins__ is the builtins dict, not the module, so this is fine
@@ -45,7 +45,7 @@ def run_file(file_path: str, width: int, height: int, stdin_data: str = ""):
         return turtle
 
 
-def generate_svg_byte_stream(file_path: str, width: int, height: int, stdin_data: str = "") -> bytes:
+def generate_svg_byte_stream(file_path: str | Path, width: int, height: int, stdin_data: str = "") -> bytes:
     """Generate SVG byte stream from file."""
     turtle_instance = run_file(file_path, width, height, stdin_data)
     return turtle_instance.to_svg().encode()
