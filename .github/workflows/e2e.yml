@@ -1,7 +1,6 @@
 name: E2E
 
 on:
-  push: # temporary: registers this workflow with GitHub so workflow_dispatch stops 404ing; reverted after
   workflow_call:
     inputs:
       image:
@@ -25,7 +24,6 @@ on:
 
 jobs:
   test:
-    if: github.event_name == 'workflow_dispatch' # temporary, see the push trigger above
     runs-on: ubuntu-latest
     container:
       image: ${{ inputs.image }}
