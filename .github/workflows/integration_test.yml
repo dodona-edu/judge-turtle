@@ -5,6 +5,11 @@ on:
 
 jobs:
   test:
+    uses: ./.github/workflows/e2e.yml
+    with:
+      ref: ${{ github.sha }}
+
+  requirements-match-image:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/dodona-edu/dodona-python:latest
@@ -12,15 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - name: Install test dependencies
-        run: ./devel/install_test_deps.sh
-      - name: Run tests
-        run: ./devel/run-tests.sh
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage
-          path: coverage.xml
+      - name: Compare requirements.txt against the image's dependency list
+        run: ./devel/requirements_delta.sh --fail
 
   # codecov-action needs curl and gpg. They happen to be in this image, but we'd
   # rather not depend on the environment the test is meant to exercise shipping them.
