@@ -38,6 +38,7 @@
 * [Recommended `config.json` (example with default settings)](#recommended-configjson-example-with-default-settings)
 * [Optional `evaluation` settings in `config.json`](#optional-evaluation-settings-in-configjson)
 * [Generator script](#generator-script)
+* [Testing](#testing)
 * [Contributors](#contributors)
 
 ## Recommended exercise directory structure
@@ -150,6 +151,24 @@ The svg images for each exercise can be made with a Python script. Place the scr
 
 ```html
 <img src="./media/image_name.svg" alt="image_name" height="50%" width="50%" style="border-style: inset">
+```
+
+## Testing
+
+The following command can be used to run the tests:
+
+```bash
+$ devel/run-tests.sh
+============================= test session starts ==============================
+platform darwin -- Python 3.12.9, pytest-9.1.1, pluggy-1.6.0
+...
+........                                                                 [100%]
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.12.9-final-0 _______________
+
+Coverage HTML written to dir htmlcov
+Coverage XML written to file coverage.xml
+============================== 8 passed in 3.51s ===============================
 ```
 
 ## Contributors
