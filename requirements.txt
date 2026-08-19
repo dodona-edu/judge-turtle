@@ -1,6 +1,6 @@
-# These mirror dodona-edu/docker-images/dodona-python.dockerfile: the judge runs with
-# whatever that image ships, so a pin that differs from it is a lie about production.
-svg-turtle==1.1.0
-Pillow==12.2.0
+# Copy of dodona-python/judge-turtle.txt in dodona-edu/docker-images, the source of
+# truth. CI checks this file against the image; PR changes there to ship them.
 cairosvg==2.9.0
 numpy==2.4.6
+Pillow==12.2.0
+svg-turtle==1.1.0
