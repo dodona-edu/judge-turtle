@@ -4,12 +4,12 @@ on:
   push:
 
 jobs:
-  test:
+  integration-test:
     uses: ./.github/workflows/e2e.yml
     with:
       ref: ${{ github.sha }}
 
-  requirements-match-image:
+  integration-lint:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/dodona-edu/dodona-python:latest
@@ -17,14 +17,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - name: Compare requirements.txt against the image's dependency list
-        run: ./devel/requirements_delta.sh --fail
+      # Runs inside the judge image so ty resolves cairosvg, numpy, Pillow, svg-turtle,
+      # etc. against the exact versions production ships, not whatever pip picks on the
+      # runner.
+      - name: Install dev dependencies
+        run: ./devel/install_dev_deps.sh
+      - name: Run the linters
+        run: ./devel/check.sh
 
   # codecov-action needs curl and gpg. They happen to be in this image, but we'd
   # rather not depend on the environment the test is meant to exercise shipping them.
   coverage:
     runs-on: ubuntu-latest
-    needs: test
+    needs: integration-test
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
