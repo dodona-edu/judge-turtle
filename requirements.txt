@@ -3,4 +3,4 @@
 cairosvg==2.9.0
 numpy==2.4.6
 Pillow==12.2.0
-svg-turtle==1.1.0
+svg-turtle==1.2.0
