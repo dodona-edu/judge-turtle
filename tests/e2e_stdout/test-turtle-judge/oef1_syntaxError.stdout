@@ -18,7 +18,7 @@
 {
  "command": "append-message",
  "message": {
-  "description": "Error bij het uitvoeren van het oplossingsscript:\n    unterminated string literal (detected at line 2) (<solution>, line 2)",
+  "description": "Error bij het uitvoeren van het ingediende script:\n    unterminated string literal (detected at line 2) (<solution>, line 2)",
   "format": "code"
  }
 }
@@ -38,6 +38,6 @@
  "command": "close-judgement",
  "status": {
   "enum": "compilation error",
-  "human": "Ongeldige query"
+  "human": "De code bevat een syntaxfout"
  }
 }

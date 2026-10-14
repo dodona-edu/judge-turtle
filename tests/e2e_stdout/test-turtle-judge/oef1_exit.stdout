@@ -18,7 +18,7 @@
 {
  "command": "append-message",
  "message": {
-  "description": "Error bij het uitvoeren van het oplossingsscript:\n    1",
+  "description": "Error bij het uitvoeren van het ingediende script:\n    1",
   "format": "code"
  }
 }
@@ -37,7 +37,7 @@
  "accepted": false,
  "command": "close-judgement",
  "status": {
-  "enum": "compilation error",
-  "human": "Ongeldige query"
+  "enum": "runtime error",
+  "human": "Gecrasht bij testen"
  }
 }

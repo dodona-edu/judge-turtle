@@ -1,0 +1,44 @@
+{
+ "command": "start-judgement"
+}
+{
+ "command": "start-tab",
+ "title": "Afbeeldingen vergelijken"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "",
+  "format": "python"
+ }
+}
+{
+ "command": "append-message",
+ "message": {
+  "description": "Error bij het uitvoeren van het oplossingsscript:\n    name 'undefined_distance' is not defined",
+  "format": "code",
+  "permission": "staff"
+ }
+}
+{
+ "accepted": false,
+ "command": "close-testcase"
+}
+{
+ "accepted": false,
+ "command": "close-context"
+}
+{
+ "command": "close-tab"
+}
+{
+ "accepted": false,
+ "command": "close-judgement",
+ "status": {
+  "enum": "internal error",
+  "human": "Interne fout"
+ }
+}
