@@ -6,7 +6,6 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 from cairosvg import svg2png
 from PIL import Image, ImageChops
 
@@ -58,16 +57,28 @@ def generate_png_image(svg_bytes: bytes, width: int, height: int) -> Image.Image
     return Image.open(png_bytes).convert("RGBA")
 
 
+def _any_channel_mask(image: Image.Image) -> Image.Image:
+    """Collapse an image to one band that is non-zero where any channel is non-zero."""
+    mask, *channels = image.split()
+    for channel in channels:
+        mask = ImageChops.lighter(mask, channel)
+    return mask
+
+
+def _count_non_zero(mask: Image.Image) -> int:
+    """Count the non-zero pixels of a single-band image."""
+    width, height = mask.size
+    return width * height - mask.histogram()[0]
+
+
 def diff_images(submission: Image.Image, solution: Image.Image) -> tuple[int, int, int]:
     """Generate difference between two images, and return the number differing pixels."""
-    # int(): np.count_nonzero returns an np.int64, which json.dumps refuses. These values only
-    # ever reach the feedback as interpolated text today, so nothing breaks, but the signature
-    # above promises int and a caller that puts one straight into a command would fail at runtime.
-    wrong_pixels = int(np.count_nonzero(np.array(ImageChops.difference(submission, solution)).any(axis=-1)))
-    total_non_transparent_pixels = int(
-        np.count_nonzero(np.array(submission).any(axis=-1) | np.array(solution).any(axis=-1))
-    )
+    submission_mask = _any_channel_mask(submission)
+    solution_mask = _any_channel_mask(solution)
+
+    wrong_pixels = _count_non_zero(_any_channel_mask(ImageChops.difference(submission, solution)))
+    total_non_transparent_pixels = _count_non_zero(ImageChops.lighter(submission_mask, solution_mask))
     correct_non_transparent_pixels = total_non_transparent_pixels - wrong_pixels
-    expected_non_transparent_pixels = int(np.count_nonzero(np.array(solution).any(axis=-1)))
+    expected_non_transparent_pixels = _count_non_zero(solution_mask)
 
     return correct_non_transparent_pixels, total_non_transparent_pixels, expected_non_transparent_pixels
