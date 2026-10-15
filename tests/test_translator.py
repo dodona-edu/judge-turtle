@@ -47,3 +47,14 @@ class TestTranslator(unittest.TestCase):
                 "human": "All tests succeeded",
             },
         )
+
+    def test_turtle_error_headlines(self):
+        self.assertEqual(
+            Translator.from_str("en").human_error(ErrorType.COMPILATION_ERROR),
+            "The code contains a syntax error",
+        )
+
+        self.assertEqual(
+            Translator.from_str("nl").human_error(ErrorType.COMPILATION_ERROR),
+            "De code bevat een syntaxfout",
+        )

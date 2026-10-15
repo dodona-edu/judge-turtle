@@ -21,6 +21,30 @@ from judge.translator import Translator
 # extract info from exercise configuration
 config = DodonaConfig.from_json(sys.stdin.read())
 
+
+def generate_svg(file_path: str | Path, stdin_data: str, *, is_reference: bool = False) -> bytes:
+    """Run a script and return its drawing, or raise a DodonaException describing why it failed."""
+    try:
+        return generate_svg_byte_stream(file_path, config.canvas_width, config.canvas_height, stdin_data)
+    except BaseException as error:
+        # BaseException: a submission calling exit() raises SystemExit, which must be reported too.
+        if is_reference:
+            raise DodonaException(
+                config.translator.error_status(ErrorType.INTERNAL_ERROR),
+                permission=MessagePermission.STAFF,
+                description=config.translator.translate(Translator.Text.SOLUTION_EXECUTION_ERROR, error=error),
+                format=MessageFormat.CODE,
+            ) from error
+
+        raise DodonaException(
+            config.translator.error_status(
+                ErrorType.COMPILATION_ERROR if isinstance(error, SyntaxError) else ErrorType.RUNTIME_ERROR
+            ),
+            description=config.translator.translate(Translator.Text.SUBMISSION_EXECUTION_ERROR, error=error),
+            format=MessageFormat.CODE,
+        ) from error
+
+
 with Judgement():
     config.sanity_check()
 
@@ -50,16 +74,7 @@ with Judgement():
                 description="",
             ),
         ):
-            try:
-                svg_submission = generate_svg_byte_stream(
-                    config.source, config.canvas_width, config.canvas_height, stdin_data
-                )
-            except BaseException as error:
-                raise DodonaException(
-                    config.translator.error_status(ErrorType.COMPILATION_ERROR),
-                    description=config.translator.translate(Translator.Text.SOLUTION_EXECUTION_ERROR, error=error),
-                    format=MessageFormat.CODE,
-                ) from error
+            svg_submission = generate_svg(config.source, stdin_data)
 
             svg_submission_str = svg_submission.decode("utf-8")
 
@@ -85,27 +100,8 @@ with Judgement():
                 description="",
             ),
         ):
-            try:
-                svg_submission = generate_svg_byte_stream(
-                    config.source, config.canvas_width, config.canvas_height, stdin_data
-                )
-            except BaseException as error:
-                raise DodonaException(
-                    config.translator.error_status(ErrorType.COMPILATION_ERROR),
-                    description=config.translator.translate(Translator.Text.SOLUTION_EXECUTION_ERROR, error=error),
-                    format=MessageFormat.CODE,
-                ) from error
-            try:
-                svg_solution = generate_svg_byte_stream(
-                    config.solution_file, config.canvas_width, config.canvas_height, stdin_data
-                )
-            except BaseException as error:
-                raise DodonaException(
-                    config.translator.error_status(ErrorType.COMPILATION_ERROR),
-                    permission=MessagePermission.STAFF,
-                    description=config.translator.translate(Translator.Text.SUBMISSION_EXECUTION_ERROR, error=error),
-                    format=MessageFormat.CODE,
-                ) from error
+            svg_submission = generate_svg(config.source, stdin_data)
+            svg_solution = generate_svg(config.solution_file, stdin_data, is_reference=True)
 
             png_submission = generate_png_image(svg_submission, config.canvas_width, config.canvas_height)
             png_solution = generate_png_image(svg_solution, config.canvas_width, config.canvas_height)

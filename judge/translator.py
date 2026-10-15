@@ -97,7 +97,7 @@ class Translator:
     error_translations: ClassVar[dict[Language, dict[ErrorType, str]]] = {
         Language.EN: {
             ErrorType.INTERNAL_ERROR: "Internal error",
-            ErrorType.COMPILATION_ERROR: "The query is not valid",
+            ErrorType.COMPILATION_ERROR: "The code contains a syntax error",
             ErrorType.MEMORY_LIMIT_EXCEEDED: "Memory limit exceeded",
             ErrorType.TIME_LIMIT_EXCEEDED: "Time limit exceeded",
             ErrorType.OUTPUT_LIMIT_EXCEEDED: "Output limit exceeded",
@@ -109,7 +109,7 @@ class Translator:
         },
         Language.NL: {
             ErrorType.INTERNAL_ERROR: "Interne fout",
-            ErrorType.COMPILATION_ERROR: "Ongeldige query",
+            ErrorType.COMPILATION_ERROR: "De code bevat een syntaxfout",
             ErrorType.MEMORY_LIMIT_EXCEEDED: "Geheugenlimiet overschreden",
             ErrorType.TIME_LIMIT_EXCEEDED: "Tijdslimiet overschreden",
             ErrorType.OUTPUT_LIMIT_EXCEEDED: "Outputlimiet overschreden",
