@@ -9,7 +9,7 @@ from typing import Any
 from cairosvg import svg2png
 from PIL import Image, ImageChops
 
-from .runtime_patch import InOutPatch, RuntimePatch, TimePatch, TurtlePatch
+from .runtime_patch import in_out_patch, runtime_patch, time_patch, turtle_patch
 
 
 def run_file(file_path: str | Path, width: int, height: int, stdin_data: str = "") -> Any:
@@ -24,10 +24,10 @@ def run_file(file_path: str | Path, width: int, height: int, stdin_data: str = "
     run_code = builtins.exec
 
     with (
-        TurtlePatch(width, height) as turtle,
-        InOutPatch(stdin_data),
-        TimePatch(),
-        RuntimePatch(script_name),
+        turtle_patch(width, height) as turtle,
+        in_out_patch(stdin_data),
+        time_patch(),
+        runtime_patch(script_name),
     ):
         run_globals = {
             "__name__": script_name,
