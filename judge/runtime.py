@@ -2,7 +2,6 @@
 
 import builtins
 import io
-from io import BytesIO
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +14,6 @@ from .runtime_patch import in_out_patch, runtime_patch, time_patch, turtle_patch
 def run_file(file_path: str | Path, width: int, height: int, stdin_data: str = "") -> Any:
     """Run the submission file."""
     script_name = "<solution>"
-    code = None
 
     with io.open_code(str(Path(file_path).resolve())) as code_file:
         code = compile(code_file.read(), script_name, "exec")
@@ -52,9 +50,8 @@ def generate_svg_byte_stream(file_path: str | Path, width: int, height: int, std
 
 def generate_png_image(svg_bytes: bytes, width: int, height: int) -> Image.Image:
     """Generate PNG image from SVG bytes."""
-    png_bytes = BytesIO()
-    svg2png(bytestring=svg_bytes, write_to=png_bytes, output_width=width, output_height=height)
-    return Image.open(png_bytes).convert("RGBA")
+    png_bytes = svg2png(bytestring=svg_bytes, output_width=width, output_height=height)
+    return Image.open(io.BytesIO(png_bytes)).convert("RGBA")
 
 
 def _any_channel_mask(image: Image.Image) -> Image.Image:
