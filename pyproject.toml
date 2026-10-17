@@ -50,8 +50,8 @@ convention = "google"
 include = ["judge/runtime_patch.py"]
 # This module swaps attributes on live stdlib modules (turtle, time, io, sys.stdin) and hands the
 # submission a fake. A type checker models a module as a static namespace, so every patch line
-# reads as an error. All 17 of ty's diagnostics on this tree are in here, and they are the point
-# of the file rather than bugs in it. Everything else is checked normally.
+# reads as an error. Those diagnostics are the point of the file rather than bugs in it.
+# Everything else is checked normally.
 
 [tool.ty.overrides.rules]
 unresolved-attribute = "ignore"

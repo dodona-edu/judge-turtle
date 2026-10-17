@@ -10,7 +10,7 @@ if [ "$(uname)" = "Darwin" ] && command -v brew > /dev/null 2>&1; then
     export DYLD_FALLBACK_LIBRARY_PATH="$(brew --prefix)/lib:${DYLD_FALLBACK_LIBRARY_PATH:-}"
 fi
 
-pytest -n auto \
+pytest \
     --cov \
     --cov-branch \
     --cov-report xml \
