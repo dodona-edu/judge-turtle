@@ -1,15 +1,18 @@
 """Test E2E."""
 
+import contextlib
 import json
 import os
-import runpy
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from io import StringIO
 from pathlib import Path
 
-from .fake_in_out import fake_in_out
+import turtle_judge
+from judge.dodona_config import DodonaConfig
 
 
 class TestEndToEnd(unittest.TestCase):
@@ -21,6 +24,28 @@ class TestEndToEnd(unittest.TestCase):
         self.maxDiff = None
         self.root_path = Path(__file__).resolve().parent.parent
 
+    def build_config(self, exercise_path: Path, submission_path: Path, cwd_path: str) -> dict:
+        """Build the Dodona config JSON for one exercise and submission."""
+        config = {}
+
+        with (exercise_path / "config.json").open(encoding="utf-8") as config_file:
+            config.update(json.load(config_file).get("evaluation", {}))
+
+        # str(): these go through json.dumps, which has no idea what a Path is.
+        config.update(
+            {
+                "memory_limit": "99999999",
+                "time_limit": "99999999",
+                "programming_language": "python",
+                "natural_language": "nl",
+                "resources": str(exercise_path / "evaluation"),
+                "source": str(submission_path),
+                "judge": str(self.root_path),
+                "workdir": cwd_path,
+            }
+        )
+        return config
+
     def run_turtle_judge(
         self,
         exercise_path: Path,
@@ -28,34 +53,16 @@ class TestEndToEnd(unittest.TestCase):
         stdout_path: Path,
         learning_mode: bool = False,
     ):
-        evaluation_path = exercise_path / "evaluation"
-        config_path = exercise_path / "config.json"
-
-        config = {}
         original_cwd = Path.cwd()
 
-        with config_path.open(encoding="utf-8") as config_file:
-            config.update(json.load(config_file).get("evaluation", {}))
-
         with tempfile.TemporaryDirectory() as cwd_path:
-            # str(): these go through json.dumps, which has no idea what a Path is.
-            config.update(
-                {
-                    "memory_limit": "99999999",
-                    "time_limit": "99999999",
-                    "programming_language": "python",
-                    "natural_language": "nl",
-                    "resources": str(evaluation_path),
-                    "source": str(submission_path),
-                    "judge": str(self.root_path),
-                    "workdir": cwd_path,
-                }
-            )
+            config = self.build_config(exercise_path, submission_path, cwd_path)
 
             os.chdir(cwd_path)
             try:
-                with fake_in_out(StringIO(json.dumps(config))) as (out, err):
-                    runpy.run_path(str(self.root_path / "turtle_judge.py"))
+                out, err = StringIO(), StringIO()
+                with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                    turtle_judge.main(DodonaConfig.from_json(json.dumps(config)))
             finally:
                 # Back out before TemporaryDirectory deletes it. Without this the process is left
                 # sitting in a directory that no longer exists, so os.getcwd() raises for whatever
@@ -116,3 +123,25 @@ class TestEndToEnd(unittest.TestCase):
 
     def test_example_exercises(self):
         self.run_all_repo_tests("example-exercises")
+
+    def test_script_entry_point(self):
+        """Run `python turtle_judge.py` with the config on stdin, as Dodona does."""
+        exercise_path = self.root_path / "tests" / "e2e_repos" / "example-exercises" / "house"
+        stdout_path = self.root_path / "tests" / "e2e_stdout" / "example-exercises" / "house_solution.stdout"
+
+        with tempfile.TemporaryDirectory() as cwd_path:
+            config = self.build_config(exercise_path, exercise_path / "solution" / "solution.py", cwd_path)
+            # sys.executable, not the `run` script: macOS /bin/sh strips DYLD_* and breaks cairo loading.
+            result = subprocess.run(  # noqa: S603
+                [sys.executable, str(self.root_path / "turtle_judge.py")],
+                input=json.dumps(config),
+                capture_output=True,
+                text=True,
+                cwd=cwd_path,
+                check=False,
+            )
+
+        self.assertMultiLineEqual(result.stderr.strip(), "")
+        self.assertEqual(result.returncode, 0)
+        actual = result.stdout.strip().replace(str(exercise_path), "<exercise_path>")
+        self.assertMultiLineEqual(actual, stdout_path.read_text(encoding="utf-8"))
