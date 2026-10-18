@@ -35,7 +35,7 @@ def generate_svg(
         if is_reference:
             raise DodonaException(
                 translator.error_status(ErrorType.INTERNAL_ERROR),
-                permission=MessagePermission.STAFF,
+                permission=MessagePermission.EDUCATOR,
                 description=translator.translate(Translator.Text.SOLUTION_EXECUTION_ERROR, error=error),
                 format=MessageFormat.CODE,
             ) from error

@@ -20,7 +20,7 @@
  "message": {
   "description": "Error bij het uitvoeren van het oplossingsscript:\n    name 'undefined_distance' is not defined",
   "format": "code",
-  "permission": "staff"
+  "permission": "educator"
  }
 }
 {
