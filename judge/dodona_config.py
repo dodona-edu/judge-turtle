@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, Self
 
 
 # PLW1641: __eq__ without __hash__. SimpleNamespace already defines __eq__ and is already
@@ -62,7 +62,7 @@ class DodonaConfig(SimpleNamespace):  # noqa: PLW1641
         return super().__eq__(other)
 
     @classmethod
-    def from_json(cls: type["DodonaConfig"], json_str: str | bytes) -> "DodonaConfig":
+    def from_json(cls, json_str: str | bytes) -> Self:
         """Decode json string into a DodonaConfig object.
 
         Args:
