@@ -53,21 +53,13 @@ class TestEndToEnd(unittest.TestCase):
         stdout_path: Path,
         learning_mode: bool = False,
     ):
-        original_cwd = Path.cwd()
-
         with tempfile.TemporaryDirectory() as cwd_path:
             config = self.build_config(exercise_path, submission_path, cwd_path)
 
-            os.chdir(cwd_path)
-            try:
+            with contextlib.chdir(cwd_path):
                 out, err = StringIO(), StringIO()
                 with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
                     turtle_judge.main(DodonaConfig.from_json(json.dumps(config)))
-            finally:
-                # Back out before TemporaryDirectory deletes it. Without this the process is left
-                # sitting in a directory that no longer exists, so os.getcwd() raises for whatever
-                # runs next, and the judge's own sanity check calls Path.cwd().
-                os.chdir(original_cwd)
 
         self.assertMultiLineEqual(err.getvalue().strip(), "")
 
