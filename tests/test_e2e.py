@@ -18,33 +18,24 @@ from judge.dodona_config import DodonaConfig
 class TestEndToEnd(unittest.TestCase):
     """E2E TestCase."""
 
-    def __init__(self, methodName: str) -> None:  # noqa: N803
-        # methodName is unittest.TestCase's own parameter name, so it can't be renamed here.
-        super().__init__(methodName=methodName)
-        self.maxDiff = None
-        self.root_path = Path(__file__).resolve().parent.parent
+    maxDiff = None
+    root_path = Path(__file__).resolve().parent.parent
 
     def build_config(self, exercise_path: Path, submission_path: Path, cwd_path: str) -> dict:
         """Build the Dodona config JSON for one exercise and submission."""
-        config = {}
-
-        with (exercise_path / "config.json").open(encoding="utf-8") as config_file:
-            config.update(json.load(config_file).get("evaluation", {}))
+        evaluation = json.loads((exercise_path / "config.json").read_text(encoding="utf-8")).get("evaluation", {})
 
         # str(): these go through json.dumps, which has no idea what a Path is.
-        config.update(
-            {
-                "memory_limit": "99999999",
-                "time_limit": "99999999",
-                "programming_language": "python",
-                "natural_language": "nl",
-                "resources": str(exercise_path / "evaluation"),
-                "source": str(submission_path),
-                "judge": str(self.root_path),
-                "workdir": cwd_path,
-            }
-        )
-        return config
+        return evaluation | {
+            "memory_limit": "99999999",
+            "time_limit": "99999999",
+            "programming_language": "python",
+            "natural_language": "nl",
+            "resources": str(exercise_path / "evaluation"),
+            "source": str(submission_path),
+            "judge": str(self.root_path),
+            "workdir": cwd_path,
+        }
 
     def run_turtle_judge(
         self,
@@ -68,9 +59,6 @@ class TestEndToEnd(unittest.TestCase):
         if learning_mode:
             stdout_path.write_text(actual, encoding="utf-8")
         else:
-            if not stdout_path.exists():
-                raise FileNotFoundError(f"Missing stdout file: {stdout_path}")
-
             self.assertMultiLineEqual(actual, stdout_path.read_text(encoding="utf-8"))
 
     def run_all_repo_tests(self, repo_path: str):
@@ -96,10 +84,7 @@ class TestEndToEnd(unittest.TestCase):
 
             solution_path = exercise_path / "solution"
 
-            for submission_path in sorted(solution_path.iterdir()):
-                if submission_path.suffix != ".py":
-                    continue
-
+            for submission_path in sorted(solution_path.glob("*.py")):
                 stdout_path = test_stdout_path / f"{exercise_path.name}_{submission_path.stem}.stdout"
 
                 with self.subTest(exercise=exercise_path.name, submission=submission_path.name):
