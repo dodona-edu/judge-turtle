@@ -21,16 +21,7 @@ class TestDodonaConfig(unittest.TestCase):
             "workdir": "[workdir]",
         }
 
-        config_changed = {
-            "memory_limit": "99999989",
-            "time_limit": "99999999",
-            "programming_language": "python",
-            "natural_language": "nl",
-            "resources": "[resources]",
-            "source": "[source]",
-            "judge": "[judge]",
-            "workdir": "[workdir]",
-        }
+        config_changed = config | {"memory_limit": "99999989"}
 
         self.assertEqual(
             DodonaConfig(**config),
