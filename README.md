@@ -171,6 +171,13 @@ Coverage XML written to file coverage.xml
 ============================== 8 passed in 3.51s ===============================
 ```
 
+On macOS with Python 3.14 or newer, run the suite in the image instead: svg-turtle's `DummyWindow` lacks the `wm_attributes` that turtle calls on macOS (fixed in the unreleased [donkirkby/svg-turtle#69](https://github.com/donkirkby/svg-turtle/pull/69); drop this note once it's released).
+
+```bash
+docker run --rm --platform linux/amd64 --user root -v "$PWD:/src:ro" ghcr.io/dodona-edu/dodona-python:latest \
+  bash -c 'cp -r /src /w && cd /w && pip install -q -r requirements-test.txt && pytest -q tests'
+```
+
 ## Contributors
 
 * **T. Ramlot**

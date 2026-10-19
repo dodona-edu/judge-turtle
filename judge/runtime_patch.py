@@ -2,12 +2,15 @@
 
 import builtins
 import sys
-from collections.abc import Iterator
 from contextlib import contextmanager
 from io import StringIO
+from typing import TYPE_CHECKING
 
 from svg_turtle import SvgTurtle
 from svg_turtle.canvas import Canvas
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 @contextmanager
