@@ -4,14 +4,14 @@ import builtins
 import sys
 from contextlib import contextmanager
 from io import StringIO
-lazy from collections.abc import Iterator
+lazy from collections.abc import Generator
 
 from svg_turtle import SvgTurtle
 from svg_turtle.canvas import Canvas
 
 
 @contextmanager
-def turtle_patch(width: int, height: int) -> Iterator[SvgTurtle]:
+def turtle_patch(width: int, height: int) -> Generator[SvgTurtle]:
     """Patch the turtle module with the provided canvas size, yielding the shared turtle."""
     turtle_mod = sys.modules["turtle"]
 
@@ -49,7 +49,7 @@ def turtle_patch(width: int, height: int) -> Iterator[SvgTurtle]:
 
 
 @contextmanager
-def time_patch() -> Iterator[None]:
+def time_patch() -> Generator[None]:
     """Patch the time module."""
     time_module = sys.modules["time"]
     old_sleep = time_module.sleep
@@ -61,7 +61,7 @@ def time_patch() -> Iterator[None]:
 
 
 @contextmanager
-def in_out_patch(stdin_data: str = "") -> Iterator[None]:
+def in_out_patch(stdin_data: str = "") -> Generator[None]:
     """Patch stdin, stdout, stderr, with optional stdin data."""
     old_in, old_out, old_err = sys.stdin, sys.stdout, sys.stderr
     try:
@@ -72,7 +72,7 @@ def in_out_patch(stdin_data: str = "") -> Iterator[None]:
 
 
 @contextmanager
-def runtime_patch(name: str) -> Iterator[None]:
+def runtime_patch(name: str) -> Generator[None]:
     """Patch the python runtime, naming the script `name`."""
     old_os = sys.modules["os"]
     old_io = sys.modules["io"]
