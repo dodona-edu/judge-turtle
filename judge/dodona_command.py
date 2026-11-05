@@ -26,67 +26,35 @@ class ErrorType(StrEnum):
 class MessagePermission(StrEnum):
     """Dodona permission for a message."""
 
-    STUDENT = "student"
     EDUCATOR = "educator"
-    ZEUS = "zeus"
 
 
 class MessageFormat(StrEnum):
     """Dodona format for a message."""
 
-    PLAIN = "plain"
-    TEXT = "text"
     HTML = "html"
-    MARKDOWN = "markdown"
-    CALLOUT = "callout"
-    CALLOUT_INFO = "callout-info"
-    CALLOUT_WARNING = "callout-warning"
-    CALLOUT_DANGER = "callout-danger"
     CODE = "code"
     PYTHON = "python"
 
 
-class AnnotationSeverity(StrEnum):
-    """Dodona severity of an annotation."""
-
-    ERROR = "error"
-    WARNING = "warning"
-    INFO = "info"
-
-
 class DodonaException(Exception):
-    """Exception that will automatically create a message and set the correct status when thrown.
+    """Exception that creates a message and sets the status of the enclosing 'with' blocks.
 
-    When thrown inside a Dodona 'with' block, an error message will be created on the current
-    Dodona object (eg. Test, Context ...). Blocks that extend the DodonaCommandWithAccepted class
-    will have their accepted field set to True (if CORRECT or CORRECT_ANSWER) and to False otherwise.
-    If the block also extends DodonaCommandWithStatus, its status is updated with this exception's
-    status. A with block with a type that matches recover_at will silently catch the exception; and
-    if the class is not Judgement, an escalate status message will be sent.
+    When thrown inside a Dodona 'with' block, the message is printed once, by the innermost block.
+    Blocks that extend DodonaCommandWithAccepted get their accepted field set (True if CORRECT or
+    CORRECT_ANSWER, False otherwise), blocks that extend DodonaCommandWithStatus also get their status
+    set. Judgement catches the exception.
     """
 
-    def __init__(
-        self,
-        status: dict[str, str],
-        recover_at: type | None = None,
-        **kwargs: Any,
-    ) -> None:
+    def __init__(self, status: dict[str, str], **kwargs: Any) -> None:
         """Create DodonaException.
 
         Args:
             status: a status object
-            recover_at: the type of the 'with' block to recover at
             **kwargs: named parameters used to create the error message
         """
         super().__init__()
         self.status = status
-        if recover_at is None:
-            # class Judgement is not yet defined, use this hack to retrieve the class at runtime
-            self.recover_at = globals()["Judgement"]
-            self.escalate_status = False
-        else:
-            self.recover_at = recover_at
-            self.escalate_status = True
         self.message = Message(**kwargs) if len(kwargs) > 0 else None
 
 
@@ -100,7 +68,7 @@ class DodonaCommand(ABC):  # noqa: B024
 
     Example:
         >>> with Judgement() as judgement:
-        ...     with Tab():
+        ...     with Tab("example tab"):
         ...         pass
 
     A JSON message will be printed to stdout when entering the 'with' block. The contents of
@@ -183,20 +151,9 @@ class DodonaCommand(ABC):  # noqa: B024
         return self.close_args
 
     def handle_dodona_exception(self, exception: DodonaException) -> bool:
-        """Handle a DodonaException.
+        """Print the exception's message, unless an inner block already did.
 
-        This function returns a boolean that is True if the exception should
-        not get propagated to parent codeblocks. This should only be True
-        if the current with block's type matches the type defined in recover_at,
-        this means that all higher levels of Dodona objects can update their
-        status and success parameters.
-
-        This function can be overwritten by child classes, these overwrites
-        should still call this function.
-
-        This function prints a Dodona message and removes the message from
-        the exception, so it is not also printed by the parent 'with' blocks.
-        The function return True if self is of the type recover_at.
+        Child classes can overwrite this, but should still call it.
 
         Args:
             exception: exception thrown in the enclosed 'with' block
@@ -204,23 +161,11 @@ class DodonaCommand(ABC):  # noqa: B024
         Returns:
             if True, the exception is not propagated
         """
-        # Add an error message
         if exception.message is not None:
             with exception.message:
                 pass
 
             exception.message = None
-
-        if isinstance(self, exception.recover_at):
-            if exception.escalate_status:
-                self.__print_command(
-                    {
-                        "command": "escalate-status",
-                        "status": exception.status,
-                    }
-                )
-
-            return True
 
         return False
 
@@ -288,6 +233,18 @@ class DodonaCommandWithStatus(DodonaCommandWithAccepted):
 class Judgement(DodonaCommandWithStatus):
     """Dodona Judgement."""
 
+    def handle_dodona_exception(self, exception: DodonaException) -> bool:
+        """Update the status and swallow the exception.
+
+        Args:
+            exception: exception thrown in the enclosed 'with' block
+
+        Returns:
+            True, the exception is not propagated
+        """
+        super().handle_dodona_exception(exception)
+        return True
+
 
 class Tab(DodonaCommand):
     """Dodona Tab."""
@@ -309,37 +266,22 @@ class Context(DodonaCommandWithAccepted):
 class TestCase(DodonaCommandWithAccepted):
     """Dodona TestCase."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         """Create TestCase.
 
-        If a single positional argument is passed, this is assumed to be the message.
-
-        Example:
-            >>> with TestCase("This is the message"):
-            ...     pass
-            >>> with TestCase({
-            ...     "format": MessageFormat.SQL,
-            ...     "description": "This is the message"
-            ... }):
-            ...     pass
-
-        If keyword arguments are passed, these are assumed to be the message's content.
+        The keyword arguments are the content of the test case's description.
 
         Example:
             >>> with TestCase(
-            ...     format=MessageFormat.SQL,
+            ...     format=MessageFormat.PYTHON,
             ...     description="This is the message"
             ... ):
             ...     pass
 
         Args:
-            *args: positional args (if length == 1, is assumed to be the description)
             **kwargs: dict is assumed to be the description object
         """
-        if len(args) == 1:
-            super().__init__(description=args[0])
-        else:
-            super().__init__(description=kwargs)
+        super().__init__(description=kwargs)
 
 
 class Test(DodonaCommandWithStatus):
@@ -359,37 +301,22 @@ class Test(DodonaCommandWithStatus):
 class Message(DodonaCommand):
     """Dodona Message."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         """Create Message.
 
-        If a single positional argument is passed, this is assumed to be the message.
+        The keyword arguments are the content of the message.
 
         Example:
-        >>> with Message("This is the message"):
-        ...     pass
-        >>> with Message({
-        ...     "format": MessageFormat.SQL,
-        ...     "description": "This is the message"
-        ... }):
-        ...     pass
-
-        If keyword arguments are passed, these are assumed to be the message's content.
-
-        Example:
-        >>> with Message(
-        ...     format=MessageFormat.SQL,
-        ...     description="This is the message"
-        ... ):
-        ...     pass
+            >>> with Message(
+            ...     format=MessageFormat.CODE,
+            ...     description="This is the message"
+            ... ):
+            ...     pass
 
         Args:
-            *args: positional args (if length == 1, is assumed to be message)
             **kwargs: dict is assumed to be the message object
         """
-        if len(args) == 1:
-            super().__init__(message=args[0])
-        else:
-            super().__init__(message=kwargs)
+        super().__init__(message=kwargs)
 
     def start_msg(self) -> dict:
         """Print the "append-message" command and parameters when entering the 'with' block.
@@ -398,31 +325,6 @@ class Message(DodonaCommand):
             start message that will be JSON encoded and printed to stdout
         """
         return {"command": "append-message", **self.start_args.__dict__}
-
-    def close_msg(self) -> None:
-        """Don't print anything when exiting the 'with' block."""
-
-
-class Annotation(DodonaCommand):
-    """Dodona Annotation."""
-
-    def __init__(self, row: int, text: str, **kwargs: Any) -> None:
-        """Create Annotation.
-
-        Args:
-            row: row number to annotate
-            text: text to add in annotation
-            **kwargs: additional named arguments
-        """
-        super().__init__(row=row, text=text, **kwargs)
-
-    def start_msg(self) -> dict:
-        """Print the "annotate-code" command and parameters when entering the 'with' block.
-
-        Returns:
-            start message that will be JSON encoded and printed to stdout
-        """
-        return {"command": "annotate-code", **self.start_args.__dict__}
 
     def close_msg(self) -> None:
         """Don't print anything when exiting the 'with' block."""
