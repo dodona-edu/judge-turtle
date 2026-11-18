@@ -1,0 +1,14 @@
+{
+    "description": {
+        "names": {
+            "en": "oef10",
+            "nl": "oef10"
+        }
+    },
+    "type": "exercise",
+    "evaluation": {
+        "canvas_width": 100,
+        "canvas_height": 100,
+        "input_files": ["zero.txt", "two.txt"]
+    }
+}

@@ -1,0 +1,77 @@
+{
+ "command": "start-judgement"
+}
+{
+ "command": "start-tab",
+ "title": "Afbeeldingen vergelijken"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "0\n",
+  "format": "code"
+ }
+}
+{
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"display:inline-block;width:50%;\"> <p style=\"padding:10px\">Indiening:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /></svg></div> </div> <div style=\"display:inline-block;float:right;width:50%;\"> <p style=\"padding:10px\">Oplossing:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /></svg></div> </div>",
+  "format": "html"
+ },
+ "expected": "0/0 (100.0%) zichtbare pixels correct"
+}
+{
+ "command": "close-test",
+ "generated": "0/0 (100.0%) zichtbare pixels correct",
+ "status": {
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
+ }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "2\n",
+  "format": "code"
+ }
+}
+{
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"display:inline-block;width:50%;\"> <p style=\"padding:10px\">Indiening:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div> <div style=\"display:inline-block;float:right;width:50%;\"> <p style=\"padding:10px\">Oplossing:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div>",
+  "format": "html"
+ },
+ "expected": "320/320 (100.0%) zichtbare pixels correct"
+}
+{
+ "command": "close-test",
+ "generated": "320/320 (100.0%) zichtbare pixels correct",
+ "status": {
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
+ }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "close-tab"
+}
+{
+ "command": "close-judgement"
+}

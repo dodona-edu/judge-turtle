@@ -6,30 +6,12 @@
  "title": "Afbeeldingen vergelijken"
 }
 {
- "command": "start-context"
-}
-{
- "command": "start-testcase",
- "description": {
-  "description": "",
-  "format": "python"
- }
-}
-{
  "command": "append-message",
  "message": {
   "description": "Error bij het uitvoeren van het oplossingsscript:\n    name 'undefined_distance' is not defined",
   "format": "code",
   "permission": "educator"
  }
-}
-{
- "accepted": false,
- "command": "close-testcase"
-}
-{
- "accepted": false,
- "command": "close-context"
 }
 {
  "command": "close-tab"

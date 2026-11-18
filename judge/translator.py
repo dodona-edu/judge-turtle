@@ -30,6 +30,8 @@ class Translator:
         SUBMISSION_TITLE = auto()
         FOREGROUND_PIXELS_CORRECT = auto()
         MINIMUM_PIXELS_CORRECT = auto()
+        INPUT_FILE_CONFLICT = auto()
+        INPUT_FILE_MISSING = auto()
 
     def __init__(self, language: Language) -> None:
         """Create Translator.
@@ -132,6 +134,8 @@ class Translator:
             Text.SUBMISSION_TITLE: "Submission:",
             Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) visible pixels correct",
             Text.MINIMUM_PIXELS_CORRECT: "at least {minimum:.1%} visible pixels correct",
+            Text.INPUT_FILE_CONFLICT: "The settings 'input_file' and 'input_files' cannot be used together.",
+            Text.INPUT_FILE_MISSING: "The input file '{path}' listed in 'input_files' does not exist.",
         },
         Language.NL: {
             Text.COMPARING_IMAGES: "Afbeeldingen vergelijken",
@@ -142,5 +146,7 @@ class Translator:
             Text.SUBMISSION_TITLE: "Indiening:",
             Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) zichtbare pixels correct",
             Text.MINIMUM_PIXELS_CORRECT: "minstens {minimum:.1%} zichtbare pixels correct",
+            Text.INPUT_FILE_CONFLICT: "De instellingen 'input_file' en 'input_files' mogen niet samen gebruikt worden.",
+            Text.INPUT_FILE_MISSING: "Het invoerbestand '{path}' uit 'input_files' bestaat niet.",
         },
     }

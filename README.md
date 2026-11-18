@@ -20,6 +20,7 @@
 * Absolute difference and percentage of mismatched visible (non-transparant) pixels
 * Support for evaluationless (creative) exercises — when no `solution.py` is provided, the student's drawing is rendered and marked correct, useful for open-ended exercises like "Draw a smiley"
 * Support for providing stdin input via an `input.txt` file — useful for exercises where the drawing depends on user input
+* Support for several inputs (`input_files`), each judged as its own testcase — catches submissions that hardcode the input
 * Option to set custom canvas size in `config.json`
 * Option to accept submissions that are almost correct, with a minimum similarity percentage in `config.json`
 * Feedback in language of user (Dutch or English)
@@ -62,6 +63,7 @@ necessary files are marked with `▶` in the tree structure below.
 |   |   +-- 📂evaluation                # -- 🔽️ ADD YOUR SOLUTION HERE 🔽 --
 |   |   |   +-- solution.py              # ▶ The Python Turtle model solution file
 |   |   |   +-- input.txt               # Optional: Input provided via stdin when running the exercise
+|   |   |   +-- red.txt, blue.txt       # Optional: Several inputs, each one a testcase (listed in `input_files`)
 |   |   +-- 📂solution                  # Optional: This will be visible in Dodona for teachers
 |   |   |   +-- solution.py              # Optional: The Python Turtle model solution file
 |   |   +-- 📂description               #
@@ -132,6 +134,7 @@ If these settings are not defined, the default value is chosen.
 | `canvas_height`                 | Height of canvas in pixels                                                                             | int                      | `250`           |
 | `minimum_similarity_percentage` | Percentage of visible pixels that must match for the submission to be correct                          | number between 0 and 100 | `100`           |
 | `input_file`                    | Relative path to input file. Contents are provided via stdin when running the submission and solution. | path                     | `./input.txt`   |
+| `input_files`                   | Relative paths to input files. Each file is one testcase. Replaces `input_file`, cannot be combined.   | list of paths            |                 |
 
 ## Generator script
 

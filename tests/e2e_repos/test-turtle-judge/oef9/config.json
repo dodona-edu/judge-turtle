@@ -1,0 +1,14 @@
+{
+    "description": {
+        "names": {
+            "en": "oef9",
+            "nl": "oef9"
+        }
+    },
+    "type": "exercise",
+    "evaluation": {
+        "canvas_width": 100,
+        "canvas_height": 100,
+        "input_files": ["red.txt", "blue.txt"]
+    }
+}

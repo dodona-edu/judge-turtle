@@ -12,7 +12,7 @@
  "command": "start-testcase",
  "description": {
   "description": "",
-  "format": "python"
+  "format": "code"
  }
 }
 {

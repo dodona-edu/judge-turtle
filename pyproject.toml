@@ -35,6 +35,7 @@ convention = "google"
 # so the docstring formatting rules, the naming rules and pathlib still hold in here.
 "tests/*" = [
     "PT009",   # the suite is unittest style, converting every assertion is a separate decision
+    "PT027",   # same for assertRaises
     "D102",    # docstrings aren't expected on test methods,
     "D103",    # or on test helpers
     "ANN201",  # nor are return types
