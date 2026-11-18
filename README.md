@@ -21,6 +21,7 @@
 * Support for evaluationless (creative) exercises — when no `solution.py` is provided, the student's drawing is rendered and marked correct, useful for open-ended exercises like "Draw a smiley"
 * Support for providing stdin input via an `input.txt` file — useful for exercises where the drawing depends on user input
 * Option to set custom canvas size in `config.json`
+* Option to accept submissions that are almost correct, with a minimum similarity percentage in `config.json`
 * Feedback in language of user (Dutch or English)
 
 ### Judge properties
@@ -124,12 +125,13 @@ necessary files are marked with `▶` in the tree structure below.
 
 If these settings are not defined, the default value is chosen.
 
-| Evaluation setting | Description                                                                                      | Possible values | Default         |
-|--------------------|--------------------------------------------------------------------------------------------------|-----------------|-----------------|
-| `solution_file`    | Relative path to solution file. If the file does not exist, the exercise runs in evaluationless mode. | path            | `./solution.py` |
-| `canvas_width`     | Width of canvas in pixels                                                                        | int             | `400`           |
-| `canvas_height`    | Height of canvas in pixels                                                                       | int             | `250`           |
-| `input_file`       | Relative path to input file. Contents are provided via stdin when running the submission and solution. | path            | `./input.txt`   |
+| Evaluation setting              | Description                                                                                            | Possible values          | Default         |
+|---------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------|-----------------|
+| `solution_file`                 | Relative path to solution file. If the file does not exist, the exercise runs in evaluationless mode.  | path                     | `./solution.py` |
+| `canvas_width`                  | Width of canvas in pixels                                                                              | int                      | `400`           |
+| `canvas_height`                 | Height of canvas in pixels                                                                             | int                      | `250`           |
+| `minimum_similarity_percentage` | Percentage of visible pixels that must match for the submission to be correct                          | number between 0 and 100 | `100`           |
+| `input_file`                    | Relative path to input file. Contents are provided via stdin when running the submission and solution. | path                     | `./input.txt`   |
 
 ## Generator script
 

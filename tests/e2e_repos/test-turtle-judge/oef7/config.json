@@ -1,0 +1,14 @@
+{
+    "description": {
+        "names": {
+            "en": "oef7",
+            "nl": "oef7"
+        }
+    },
+    "type": "exercise",
+    "evaluation": {
+        "canvas_width": 100,
+        "canvas_height": 100,
+        "minimum_similarity_percentage": 90
+    }
+}

@@ -18,6 +18,8 @@ from judge.dodona_config import DodonaConfig
 from judge.runtime import diff_images, generate_png_image, generate_svg_byte_stream
 from judge.translator import Translator
 
+FULL_SIMILARITY_PERCENTAGE = 100
+
 
 def generate_svg(
     file_path: str | Path,
@@ -62,6 +64,9 @@ def main(config: DodonaConfig) -> None:
         # Set 'canvas_height' to 250 if not set
         canvas_height = int(getattr(config, "canvas_height", "250"))
         canvas_size = (canvas_width, canvas_height)
+        minimum_similarity_percentage = float(
+            getattr(config, "minimum_similarity_percentage", FULL_SIMILARITY_PERCENTAGE)
+        )
 
         # Set 'solution_file' to "./solution.py" if not set
         solution_file = Path(config.resources) / str(getattr(config, "solution_file", "./solution.py"))
@@ -129,17 +134,25 @@ def main(config: DodonaConfig) -> None:
                     </div>
                     """
 
+                if minimum_similarity_percentage >= FULL_SIMILARITY_PERCENTAGE:
+                    expected = translator.translate(
+                        Translator.Text.FOREGROUND_PIXELS_CORRECT,
+                        correct_pixels=expected_total,
+                        total_pixels=expected_total,
+                        fraction=1,
+                    )
+                else:
+                    expected = translator.translate(
+                        Translator.Text.MINIMUM_PIXELS_CORRECT,
+                        minimum=minimum_similarity_percentage / 100,
+                    )
+
                 with Test(
                     {
                         "format": MessageFormat.HTML,
                         "description": " ".join(html.split()),
                     },
-                    translator.translate(
-                        Translator.Text.FOREGROUND_PIXELS_CORRECT,
-                        correct_pixels=expected_total,
-                        total_pixels=expected_total,
-                        fraction=1,
-                    ),
+                    expected,
                 ) as test:
                     test.generated = translator.translate(
                         Translator.Text.FOREGROUND_PIXELS_CORRECT,
@@ -148,7 +161,8 @@ def main(config: DodonaConfig) -> None:
                         fraction=correct_pixels / total_pixels,
                     )
 
-                    if correct_pixels < total_pixels:
+                    # Multiplying avoids float rounding at the threshold (29 / 100 * 100 < 29).
+                    if correct_pixels * 100 < minimum_similarity_percentage * total_pixels:
                         test.status = translator.error_status(ErrorType.WRONG)
                     else:
                         test.status = translator.error_status(ErrorType.CORRECT)

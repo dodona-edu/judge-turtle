@@ -29,6 +29,7 @@ class Translator:
         SOLUTION_TITLE = auto()
         SUBMISSION_TITLE = auto()
         FOREGROUND_PIXELS_CORRECT = auto()
+        MINIMUM_PIXELS_CORRECT = auto()
 
     def __init__(self, language: Language) -> None:
         """Create Translator.
@@ -130,6 +131,7 @@ class Translator:
             Text.SOLUTION_TITLE: "Solution:",
             Text.SUBMISSION_TITLE: "Submission:",
             Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) visible pixels correct",
+            Text.MINIMUM_PIXELS_CORRECT: "at least {minimum:.1%} visible pixels correct",
         },
         Language.NL: {
             Text.COMPARING_IMAGES: "Afbeeldingen vergelijken",
@@ -139,5 +141,6 @@ class Translator:
             Text.SOLUTION_TITLE: "Oplossing:",
             Text.SUBMISSION_TITLE: "Indiening:",
             Text.FOREGROUND_PIXELS_CORRECT: "{correct_pixels}/{total_pixels} ({fraction:.1%}) zichtbare pixels correct",
+            Text.MINIMUM_PIXELS_CORRECT: "minstens {minimum:.1%} zichtbare pixels correct",
         },
     }
