@@ -53,6 +53,31 @@ class TestReadInputs(unittest.TestCase):
         self.write("b.txt", "b\n")
         self.assertEqual(self.read(input_files=["b.txt", "a.txt"]), ["b\n", "a\n"])
 
+    def test_discovers_txt_files_in_natural_order(self):
+        for name in ["10.txt", "2.txt", "1.txt", "b.txt", "a.txt"]:
+            self.write(name, f"{name}\n")
+        self.assertEqual(self.read(), ["1.txt\n", "2.txt\n", "10.txt\n", "a.txt\n", "b.txt\n"])
+
+    def test_input_file_ignores_other_txt_files(self):
+        self.write("input.txt", "input\n")
+        self.write("other.txt", "other\n")
+        self.assertEqual(self.read(input_file="other.txt"), ["other\n"])
+
+    def test_input_files_ignores_unlisted_txt_files(self):
+        self.write("a.txt", "a\n")
+        self.write("b.txt", "b\n")
+        self.assertEqual(self.read(input_files=["b.txt"]), ["b\n"])
+
+    def test_no_txt_files(self):
+        self.write("solution.py", "pass\n")
+        self.assertEqual(self.read(), [""])
+
+    def test_txt_in_subfolder_ignored(self):
+        (self.resources / "sub").mkdir()
+        self.write("sub/a.txt", "a\n")
+        self.write("b.txt", "b\n")
+        self.assertEqual(self.read(), ["b\n"])
+
     def test_both_keys_set(self):
         self.write("a.txt", "a\n")
         with self.assertRaises(DodonaException) as context:
