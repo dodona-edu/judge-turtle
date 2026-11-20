@@ -11,8 +11,8 @@
 {
  "command": "start-testcase",
  "description": {
-  "description": "",
-  "format": "python"
+  "description": "4\n",
+  "format": "code"
  }
 }
 {
