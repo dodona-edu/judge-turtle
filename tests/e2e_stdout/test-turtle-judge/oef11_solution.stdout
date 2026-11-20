@@ -1,0 +1,109 @@
+{
+ "command": "start-judgement"
+}
+{
+ "command": "start-tab",
+ "title": "Afbeeldingen vergelijken"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "1\n",
+  "format": "code"
+ }
+}
+{
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"display:inline-block;width:50%;\"> <p style=\"padding:10px\">Indiening:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div> <div style=\"display:inline-block;float:right;width:50%;\"> <p style=\"padding:10px\">Oplossing:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div>",
+  "format": "html"
+ },
+ "expected": "160/160 (100.0%) zichtbare pixels correct"
+}
+{
+ "command": "close-test",
+ "generated": "160/160 (100.0%) zichtbare pixels correct",
+ "status": {
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
+ }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "2\n",
+  "format": "code"
+ }
+}
+{
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"display:inline-block;width:50%;\"> <p style=\"padding:10px\">Indiening:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div> <div style=\"display:inline-block;float:right;width:50%;\"> <p style=\"padding:10px\">Oplossing:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div>",
+  "format": "html"
+ },
+ "expected": "320/320 (100.0%) zichtbare pixels correct"
+}
+{
+ "command": "close-test",
+ "generated": "320/320 (100.0%) zichtbare pixels correct",
+ "status": {
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
+ }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "start-context"
+}
+{
+ "command": "start-testcase",
+ "description": {
+  "description": "10\n",
+  "format": "code"
+ }
+}
+{
+ "command": "start-test",
+ "description": {
+  "description": "<div style=\"display:inline-block;width:50%;\"> <p style=\"padding:10px\">Indiening:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"100.0,50.000000000000014 120.0,50.00000000000002 120.00000000000001,30.00000000000002 100.00000000000001,30.00000000000001 100.0,50.000000000000014\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"125.0,50.00000000000003 145.0,50.00000000000004 145.0,30.000000000000043 125.00000000000001,30.000000000000025 125.0,50.00000000000003\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"150.0,50.00000000000005 170.0,50.00000000000007 170.0,30.000000000000068 150.0,30.000000000000046 150.0,50.00000000000004\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"175.0,50.00000000000008 195.0,50.0000000000001 195.00000000000003,30.000000000000103 175.00000000000003,30.000000000000075 175.0,50.00000000000007\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"200.0,50.000000000000114 220.0,50.00000000000014 220.00000000000003,30.000000000000142 200.00000000000003,30.00000000000011 200.0,50.000000000000114\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"225.0,50.000000000000156 245.0,50.000000000000185 245.00000000000003,30.00000000000019 225.00000000000003,30.000000000000153 225.0,50.000000000000156\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"250.0,50.0000000000002 270.0,50.00000000000024 270.0,30.00000000000024 250.00000000000003,30.0000000000002 249.99999999999997,50.0000000000002\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"275.0,50.000000000000256 295.0,50.0000000000003 295.0,30.0000000000003 275.0,30.000000000000252 275.0,50.000000000000256\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div> <div style=\"display:inline-block;float:right;width:50%;\"> <p style=\"padding:10px\">Oplossing:</p> <div style=\"width:98%;background-color:#fff\"><svg baseProfile=\"full\" height=\"100\" version=\"1.1\" width=\"100\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"50.0,50.0 70.0,50.0 70.0,30.0 50.0,29.999999999999996 49.99999999999999,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"75.0,50.0 95.0,50.00000000000001 95.0,30.000000000000007 75.0,30.0 75.0,50.0\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"100.0,50.000000000000014 120.0,50.00000000000002 120.00000000000001,30.00000000000002 100.00000000000001,30.00000000000001 100.0,50.000000000000014\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"125.0,50.00000000000003 145.0,50.00000000000004 145.0,30.000000000000043 125.00000000000001,30.000000000000025 125.0,50.00000000000003\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"150.0,50.00000000000005 170.0,50.00000000000007 170.0,30.000000000000068 150.0,30.000000000000046 150.0,50.00000000000004\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"175.0,50.00000000000008 195.0,50.0000000000001 195.00000000000003,30.000000000000103 175.00000000000003,30.000000000000075 175.0,50.00000000000007\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"200.0,50.000000000000114 220.0,50.00000000000014 220.00000000000003,30.000000000000142 200.00000000000003,30.00000000000011 200.0,50.000000000000114\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"225.0,50.000000000000156 245.0,50.000000000000185 245.00000000000003,30.00000000000019 225.00000000000003,30.000000000000153 225.0,50.000000000000156\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"250.0,50.0000000000002 270.0,50.00000000000024 270.0,30.00000000000024 250.00000000000003,30.0000000000002 249.99999999999997,50.0000000000002\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /><polyline clip-path=\"url(#border_clip)\" fill=\"none\" points=\"275.0,50.000000000000256 295.0,50.0000000000003 295.0,30.0000000000003 275.0,30.000000000000252 275.0,50.000000000000256\" stroke=\"black\" stroke-linecap=\"round\" stroke-width=\"2\" /></svg></div> </div>",
+  "format": "html"
+ },
+ "expected": "342/342 (100.0%) zichtbare pixels correct"
+}
+{
+ "command": "close-test",
+ "generated": "342/342 (100.0%) zichtbare pixels correct",
+ "status": {
+  "enum": "correct",
+  "human": "Alle testen geslaagd"
+ }
+}
+{
+ "command": "close-testcase"
+}
+{
+ "command": "close-context"
+}
+{
+ "command": "close-tab"
+}
+{
+ "command": "close-judgement"
+}

@@ -19,8 +19,8 @@
 * Submission and solution image shown side-by-side
 * Absolute difference and percentage of mismatched visible (non-transparant) pixels
 * Support for evaluationless (creative) exercises — when no `solution.py` is provided, the student's drawing is rendered and marked correct, useful for open-ended exercises like "Draw a smiley"
-* Support for providing stdin input via an `input.txt` file — useful for exercises where the drawing depends on user input
-* Support for several inputs (`input_files`), each judged as its own testcase — catches submissions that hardcode the input
+* Support for providing stdin input via `.txt` files in the `evaluation` folder: useful for exercises where the drawing depends on user input
+* Support for several inputs, each judged as its own testcase: catches submissions that hardcode the input
 * Option to set custom canvas size in `config.json`
 * Option to accept submissions that are almost correct, with a minimum similarity percentage in `config.json`
 * Feedback in language of user (Dutch or English)
@@ -39,6 +39,7 @@
 * [Recommended `dirconfig.json`](#recommended-dirconfigjson)
 * [Recommended `config.json` (example with default settings)](#recommended-configjson-example-with-default-settings)
 * [Optional `evaluation` settings in `config.json`](#optional-evaluation-settings-in-configjson)
+* [Multiple inputs](#multiple-inputs)
 * [Generator script](#generator-script)
 * [Testing](#testing)
 * [Contributors](#contributors)
@@ -63,7 +64,7 @@ necessary files are marked with `▶` in the tree structure below.
 |   |   +-- 📂evaluation                # -- 🔽️ ADD YOUR SOLUTION HERE 🔽 --
 |   |   |   +-- solution.py              # ▶ The Python Turtle model solution file
 |   |   |   +-- input.txt               # Optional: Input provided via stdin when running the exercise
-|   |   |   +-- red.txt, blue.txt       # Optional: Several inputs, each one a testcase (listed in `input_files`)
+|   |   |   +-- 0.txt, 1.txt, ...       # Optional: Several inputs next to or instead of `input.txt`, each one a testcase
 |   |   +-- 📂solution                  # Optional: This will be visible in Dodona for teachers
 |   |   |   +-- solution.py              # Optional: The Python Turtle model solution file
 |   |   +-- 📂description               #
@@ -133,8 +134,14 @@ If these settings are not defined, the default value is chosen.
 | `canvas_width`                  | Width of canvas in pixels                                                                              | int                      | `400`           |
 | `canvas_height`                 | Height of canvas in pixels                                                                             | int                      | `250`           |
 | `minimum_similarity_percentage` | Percentage of visible pixels that must match for the submission to be correct                          | number between 0 and 100 | `100`           |
-| `input_file`                    | Relative path to input file. Contents are provided via stdin when running the submission and solution. | path                     | `./input.txt`   |
-| `input_files`                   | Relative paths to input files. Each file is one testcase. Replaces `input_file`, cannot be combined.   | list of paths            |                 |
+| `input_file`                    | Relative path to the only input file. Contents are provided via stdin when running the submission and solution. Cannot be combined with `input_files`. | path | every `.txt` file |
+| `input_files`                   | Relative paths to the input files, in the order they are judged. Each file is one testcase. Cannot be combined with `input_file`. | list of paths | every `.txt` file |
+
+## Multiple inputs
+
+Every `.txt` file directly in the `evaluation` folder is an input that is provided via stdin. The submission and solution run once per file, and each run is judged as its own testcase, in natural order (`2.txt` comes before `10.txt`). Without any `.txt` file, the exercise runs once with empty stdin.
+
+Use `input_files` (a list of paths) or `input_file` (a single path) to judge only the files they name. Set at most one of them.
 
 ## Generator script
 

@@ -1,5 +1,6 @@
 """turtle judge main script."""
 
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -42,14 +43,22 @@ def educator_error(translator: Translator, description: str) -> DodonaException:
     )
 
 
+def natural_sort_key(path: Path) -> list[int | str]:
+    """Sort key that compares digit runs as numbers, so 2.txt comes before 10.txt."""
+    return [int(part) if i % 2 else part for i, part in enumerate(re.split(r"(\d+)", path.name))]
+
+
 def read_inputs(config: DodonaConfig, translator: Translator) -> list[str]:
     """Read the stdin contents to judge, one per testcase."""
     resources = Path(config.resources)
     input_files = getattr(config, "input_files", None)
 
     if input_files is None:
-        input_file = resources / str(getattr(config, "input_file", "./input.txt"))
-        return [input_file.read_text(encoding="utf-8") if input_file.exists() else ""]
+        if hasattr(config, "input_file"):
+            input_file = resources / str(config.input_file)
+            return [input_file.read_text(encoding="utf-8") if input_file.exists() else ""]
+        found = sorted(resources.glob("*.txt"), key=natural_sort_key)
+        return [p.read_text(encoding="utf-8") for p in found] or [""]
 
     if hasattr(config, "input_file"):
         raise educator_error(translator, translator.translate(Translator.Text.INPUT_FILE_CONFLICT))
